@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class PrqlStmt
+
+class PrqlStmtDirective
+
+class PrqlStmtDef
+
+class PrqlStmtPipeLine
+
+PrqlStmt <|-- PrqlStmtDirective
+PrqlStmt <|-- PrqlStmtDef
+PrqlStmt <|-- PrqlStmtPipeLine
+
+PrqlStmtDef <|-- PrqlStmtFuncDef
+PrqlStmtDef <|-- PrqlStmtTableDef
+
+PrqlStmtPipeLine <|-- PrqlStmtAggregate
+PrqlStmtPipeLine <|-- PrqlStmtDerive
+PrqlStmtPipeLine <|-- PrqlStmtFilter
+PrqlStmtPipeLine <|-- PrqlStmtFrom
+PrqlStmtPipeLine <|-- PrqlStmtGroup
+PrqlStmtPipeLine <|-- PrqlStmtJoin
+PrqlStmtPipeLine <|-- PrqlStmtSelect
+PrqlStmtPipeLine <|-- PrqlStmtSort
+PrqlStmtPipeLine <|-- PrqlStmtTake
+PrqlStmtPipeLine <|-- PrqlStmtWindow
+
+@enduml
