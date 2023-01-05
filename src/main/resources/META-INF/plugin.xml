@@ -1,0 +1,28 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.github.linuxchina.jetbrains.prql</id>
+    <name>PRQL</name>
+    <vendor email="libing.chen@gmail.com">linux_china</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.database</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="prql"
+                  implementationClass="org.mvnsearch.plugins.prql.lang.psi.PrqlFileType"
+                  fieldName="INSTANCE" fileNamesCaseInsensitive="false"
+                  language="PRQL" extensions="prql"/>
+        <lang.parserDefinition language="PRQL"
+                               implementationClass="org.mvnsearch.plugins.prql.lang.parser.PrqlParserDefinition"/>
+        <annotator language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.insight.PrqlAnnotator"/>
+        <lang.commenter language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.comment.PrqlCommenter"/>
+        <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.DatabaseNameCompletionContributor"/>
+        <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.PrqlHeaderNameCompletionContributor"/>
+        <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.DirectiveCompletionContributor"/>
+        <multiHostInjector implementation="org.mvnsearch.plugins.prql.lang.injector.SQLLanguageInjector"/>
+    </extensions>
+
+    <applicationListeners>
+
+    </applicationListeners>
+</idea-plugin>

@@ -1,0 +1,164 @@
+{
+  parserClass="org.mvnsearch.plugins.prql.lang.parser.PrqlParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Prql"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.mvnsearch.plugins.prql.lang.psi"
+  psiImplPackage="org.mvnsearch.plugins.prql.lang.psi.impl"
+
+  elementTypeHolderClass="org.mvnsearch.plugins.prql.lang.psi.PrqlTypes"
+  elementTypeClass="org.mvnsearch.plugins.prql.lang.psi.PrqlElementType"
+  tokenTypeClass="org.mvnsearch.plugins.prql.lang.psi.PrqlTokenType"
+
+   psiImplUtilClass="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlPsiImplUtil"
+
+  tokens=[
+              LBRACE      =  '{'
+              RBRACE      =  '}'
+              LBRACK      =  '['
+              RBRACK      =  ']'
+              LPAREN      =  '('
+              RPAREN      =  ')'
+              COLON       =  ':'
+              COMMA       =  ','
+              EQ          =  '='
+              EXCLEQ      =  '!='
+              EQEQ        =  '=='
+              PLUS        =  '+'
+              MINUS       =  '-'
+              MUL         =  '*'
+              DIV         =  '/'
+              REM         =  '%'
+              OR          =  '|'
+              LT          =  '<'
+              LT_EQ       =  '<='
+              GT          =  '>'
+              GT_EQ       =  '>='
+              DOT         =  '.'
+              DOTDOT      =  '..'
+              ARROW       =  '->'
+              AT          =  '@'
+              DOLLAR      =  '$'
+              COALESCE    =  '??'
+              NULL        =  'null'
+              BOOL_TRUE=  'true'
+              BOOL_FALSE=  'false'
+              AND_LITERAL =  'and'
+              OR_LITERAL  =  'or'
+              IN     =  'in'
+              SWITCH     =  'switch'
+              PARAM = 'regexp:(\$\d+)'
+              IDENTIFIER = 'regexp:[a-zA-Z0-9][_a-zA-Z0-9]*'
+              COMMENT = 'regexp:("#")[^\n]*'
+              INTEGER_LITERAL = 'regexp:\d+'
+              DOUBLE_LITERAL = 'regexp:\d+\.\d+'
+              RAW_LITERAL = 'regexp:(`[^`\r\n]* ` )'
+              CHAR_LITERAL = "regexp:('[^\\'\r\n]*')"
+              STRING_LITERAL = 'regexp:("[^\\"\r\n]*")'
+              F_STRING = 'regexp:(f"[^\\"\r\n]*")'
+              S_STRING = 'regexp:(s"[^\\"\r\n]*")'
+              INDENTED_STRING = 'regexp:(""")[^(""")]*("""")'
+              S_INDENTED_STRING = 'regexp:s(""")[^(""")]*(""")'
+              RESERVED_KEYWORD = 'reserved_keyword'
+              AGGREGATE_FUNCTION = 'aggregate_function'
+              IDENTIFIER = 'regexp:[a-zA-Z0-9][_a-zA-Z0-9]*'
+              //time related
+              DATE_LITERAL = 'regexp:("@")(\d{4})-(\d{2})-(\d{2})'
+              TIME_LITERAL = 'regexp:("@")(\d{2}):(\d{2})(:\d{2})'
+              TIMESTAMP_LITERAL = 'regexp:("@")(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-]\d+(:\d+)?)?'
+              INTERVAL_LITERAL = 'regexp:(\d+)(seconds|minutes|hours|days|months|years)'
+          ]
+}
+
+
+PrqlFile ::= any*
+
+private recover ::= !(any)
+private any ::= !<<eof>> (stmt | NEW_LINE | COMMENT | OR) {pin=1 recoverWhile=recover}
+
+arithmetic_operation ::= (PLUS | MINUS | MUL | DIV | REM | LPAREN | RPAREN | COALESCE | LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
+compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ | AND_LITERAL | OR_LITERAL | LPAREN | RPAREN)
+range ::= range_item DOTDOT range_item?
+range_item ::= (MINUS? INTEGER_LITERAL) | DOUBLE_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
+positive_range ::= INTEGER_LITERAL DOTDOT INTEGER_LITERAL
+date_time_literal ::= DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL | INTERVAL_LITERAL
+func_call ::= LPAREN func_name (OR | func_param | expr_literal )* RPAREN
+between_expr ::= LPAREN column_name OR IN range RPAREN
+switch_expr ::= SWITCH LBRACK NEW_LINE* switch_arm (NEW_LINE* switch_arm)* (NEW_LINE* switch_default)? NEW_LINE* RBRACK
+switch_arm ::= IDENTIFIER EQEQ (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) ARROW (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) COMMA
+switch_default ::= BOOL_TRUE ARROW (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) COMMA
+expr_literal ::=  F_STRING | S_STRING | STRING_LITERAL | RAW_LITERAL | switch_expr | INTEGER_LITERAL | DOUBLE_LITERAL | PARAM | date_time_literal| range | NULL | column_with_table| AGGREGATE_FUNCTION | IDENTIFIER
+expr ::=  between_expr | func_call | (LPAREN? (expr_literal | arithmetic_operation)* RPAREN?)
+bool_expr ::= between_expr | ( LPAREN? expr_literal compare_operation expr_literal RPAREN? )
+column_name ::= IDENTIFIER
+column_with_table ::= table_alias DOT IDENTIFIER
+column_variant ::= ( (table_alias DOT column_name) | column_name | RAW_LITERAL )
+column_alias ::= IDENTIFIER
+table_name ::= IDENTIFIER
+table_alias ::= IDENTIFIER
+table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name) | table_name | RAW_LITERAL | table_from_sql )
+table_from_sql ::=  S_STRING {pin=1 implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableFromSQLInjectionHost"}
+func_name ::= IDENTIFIER
+func_param ::= IDENTIFIER (COLON func_param_value)?
+func_param_value ::= INTEGER_LITERAL | DOUBLE_LITERAL | STRING_LITERAL | DATE_LITERAL |TIME_LITERAL| TIMESTAMP_LITERAL
+stmt ::= stmt_prql_directive | stmt_def | stmt_pipe_line
+stmt_def ::= stmt_func_def | stmt_table_def
+stmt_pipe_line ::= stmt_from | stmt_union | stmt_concat| stmt_func_def | stmt_table_def | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window | stmt_group
+// prql statement
+stmt_prql_directive ::= 'prql' prql_header_name COLON prql_header_value {pin=1}
+prql_header_name ::= IDENTIFIER
+prql_header_value ::= (IDENTIFIER (DOT IDENTIFIER)*) | IDENTIFIER | STRING_LITERAL
+// func statement
+stmt_func_def ::= 'func' func_name (stmt_func_def_param)* ARROW stmt_func_body {pin=1}
+stmt_func_param ::= IDENTIFIER
+stmt_func_body ::= expr
+stmt_func_def_param ::= stmt_func_param (COLON func_param_value)?
+// table statement
+stmt_table_def ::= 'table' table_name EQ ( stmt_table_from_sql | stmt_table_from_pipes ) { pin=1 mixin="org.mvnsearch.plugins.prql.lang.psi.PrqlStmtTableDefElementImpl" implements="org.mvnsearch.plugins.prql.lang.psi.PrqlNamedElement" methods=[getKey getValue getName setName getNameIdentifier getPresentation] }
+stmt_table_from_sql ::= S_INDENTED_STRING {pin=1 implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableDefSQLInjectionHost"}
+stmt_table_from_pipes ::= (LPAREN NEW_LINE* stmt_table_pipes_body NEW_LINE* RPAREN)
+stmt_table_pipes_body ::=  (stmt_pipe_line | NEW_LINE)*
+// from statement
+stmt_from ::= 'from' table_variant {pin=1}
+// union statement
+stmt_union ::= 'union' table_variant {pin=1}
+// concat statement
+stmt_concat ::= 'concat' table_variant {pin=1}
+// take statement
+stmt_take ::= 'take' ( positive_range | INTEGER_LITERAL ) {pin=1}
+// filter statement
+stmt_filter ::= 'filter' (bool_expr) ( (AND_LITERAL | OR_LITERAL) bool_expr)* {pin=1}
+// derive statement
+stmt_derive ::= 'derive'  (stmt_derive_pairs | stmt_derive_pair)  {pin=1}
+stmt_derive_pair ::= (column_name EQ)? expr
+stmt_derive_pairs ::= LBRACK NEW_LINE* (stmt_derive_pair) (COMMA NEW_LINE* stmt_derive_pair)*  NEW_LINE* RBRACK
+// aggregate statement
+stmt_aggregate ::= 'aggregate' (stmt_aggregate_pairs) {pin=1}
+stmt_aggregate_pair ::= (column_name EQ)? expr
+stmt_aggregate_pairs ::= LBRACK NEW_LINE* (stmt_aggregate_pair) (COMMA NEW_LINE* stmt_aggregate_pair)*  NEW_LINE* RBRACK
+//sort statement
+stmt_sort ::= 'sort' (stmt_sort_columns | stmt_sort_column ) {pin=1}
+stmt_sort_column ::= (PLUS|MINUS)? (column_name | S_STRING | F_STRING)
+stmt_sort_columns ::= LBRACK (stmt_sort_column) (COMMA stmt_sort_column)* RBRACK
+//select statement
+stmt_select ::= 'select' (stmt_select_pairs | stmt_select_pair )  {pin=1}
+stmt_select_pair ::=  (column_variant EQ)? expr
+stmt_select_pairs ::= LBRACK NEW_LINE* (stmt_select_pair) (COMMA NEW_LINE* stmt_select_pair)*  NEW_LINE* RBRACK
+//join statement
+stmt_join ::= 'join' (stmt_join_side_expression)? stmt_join_table stmt_join_conditions {pin=1}
+stmt_join_side_expression ::= 'side' COLON ('inner'| 'left'|'right'| 'full')
+stmt_join_table ::= table_variant
+stmt_join_column ::= (column_alias DOT column_name) | column_name
+stmt_join_conditions ::= LBRACK stmt_join_column? EQEQ stmt_join_column RBRACK
+//window statement
+stmt_window ::= 'window' (stmt_window_rows_expression | stmt_window_expanding_expression | stmt_window_rolling_expression)? stmt_window_range_expression? stmt_window_block? {pin=1}
+stmt_window_rows_expression ::= 'rows' COLON MINUS? INTEGER_LITERAL? DOTDOT INTEGER_LITERAL?
+stmt_window_expanding_expression ::= 'expanding' COLON BOOL_TRUE
+stmt_window_rolling_expression ::= 'rolling' COLON INTEGER_LITERAL
+stmt_window_range_expression ::= 'range' COLON positive_range
+stmt_window_block ::= LPAREN NEW_LINE* ( (stmt_derive) | NEW_LINE )* RPAREN
+// group statement
+stmt_group ::= 'group' ( stmt_group_columns  | column_name ) (stmt_group_block)? {pin=1}
+stmt_group_columns ::= LBRACK (column_name) (COMMA column_name)* RBRACK
+stmt_group_block ::= LPAREN NEW_LINE* ( (stmt_aggregate) | (stmt_take) | (stmt_sort) | (stmt_window) | NEW_LINE )* RPAREN
