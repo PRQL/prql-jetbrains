@@ -20,7 +20,7 @@ class DirectiveCompletionContributor : CompletionContributor() {
                 ) {
                     val caret = parameters.editor.caretModel.currentCaret
                     val lineOffset = caret.visualLineStart
-                    val prefixText = parameters.editor.document.getText(TextRange(lineOffset, caret.offset)).trim()
+                    val prefixText = parameters.editor.document.getText(TextRange(lineOffset, caret.offset)).trimStart()
                     if (!prefixText.contains("#") && !prefixText.contains(' ')) {
                         result.addElement(LookupElementBuilder.create("prql ").withPresentableText("prql"))
                         result.addElement(LookupElementBuilder.create("func ").withPresentableText("func"))
