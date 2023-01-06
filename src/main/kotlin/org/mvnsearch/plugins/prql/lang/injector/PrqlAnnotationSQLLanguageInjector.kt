@@ -1,6 +1,5 @@
 package org.mvnsearch.plugins.prql.lang.injector
 
-import com.intellij.lang.Language
 import com.intellij.lang.injection.MultiHostInjector
 import com.intellij.lang.injection.MultiHostRegistrar
 import com.intellij.openapi.project.DumbAware
@@ -8,10 +7,10 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLanguageInjectionHost
+import org.mvnsearch.plugins.prql.lang.PrqlLanguage
 
 
 class PrqlAnnotationSQLLanguageInjector : MultiHostInjector, DumbAware {
-    private val sqlLanguage: Language = Language.findLanguageByID("SQL")!!
 
 
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
@@ -34,7 +33,7 @@ class PrqlAnnotationSQLLanguageInjector : MultiHostInjector, DumbAware {
                                 val trimmedText = prqlCode.subSequence(0, endOffset).trimEnd()
                                 val adjustedOffset = prqlCode.length - trimmedText.length
                                 val injectionTextRange = TextRange(offset, prqlCodeBlock.textLength - adjustedOffset)
-                                registrar.startInjecting(sqlLanguage)
+                                registrar.startInjecting(PrqlLanguage)
                                 registrar.addPlace(null, null, prqlCodeBlock as PsiLanguageInjectionHost, injectionTextRange)
                                 registrar.doneInjecting()
                             }
@@ -44,7 +43,7 @@ class PrqlAnnotationSQLLanguageInjector : MultiHostInjector, DumbAware {
                                 val endOffset = prqlCode.lastIndexOf('"')
                                 if (endOffset > offset) {
                                     val injectionTextRange = TextRange(offset, endOffset)
-                                    registrar.startInjecting(sqlLanguage)
+                                    registrar.startInjecting(PrqlLanguage)
                                     registrar.addPlace(null, null, prqlCodeBlock as PsiLanguageInjectionHost, injectionTextRange)
                                     registrar.doneInjecting()
                                 }
