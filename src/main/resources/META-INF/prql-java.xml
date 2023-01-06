@@ -1,0 +1,6 @@
+<idea-plugin>
+    <depends>com.intellij.java</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <multiHostInjector implementation="org.mvnsearch.plugins.prql.lang.injector.PrqlAnnotationSQLLanguageInjector"/>
+    </extensions>
+</idea-plugin>
