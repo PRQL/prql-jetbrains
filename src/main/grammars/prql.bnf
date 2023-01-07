@@ -138,7 +138,7 @@ stmt_aggregate ::= 'aggregate' (stmt_aggregate_pairs) {pin=1}
 stmt_aggregate_pair ::= (column_name EQ)? expr
 stmt_aggregate_pairs ::= LBRACK NEW_LINE* (stmt_aggregate_pair) (COMMA NEW_LINE* stmt_aggregate_pair)*  NEW_LINE* RBRACK
 //sort statement
-stmt_sort ::= 'sort' (stmt_sort_columns | stmt_sort_column ) {pin=1}
+stmt_sort ::= 'sort' (stmt_sort_columns | column_name ) {pin=1}
 stmt_sort_column ::= (PLUS|MINUS)? (column_name | S_STRING | F_STRING)
 stmt_sort_columns ::= LBRACK (stmt_sort_column) (COMMA stmt_sort_column)* RBRACK
 //select statement
