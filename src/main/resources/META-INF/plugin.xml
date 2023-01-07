@@ -18,6 +18,7 @@
         <annotator language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.insight.PrqlAnnotator"/>
         <lang.commenter language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.comment.PrqlCommenter"/>
         <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.DatabaseNameCompletionContributor"/>
+        <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.TableNameCompletionContributor"/>
         <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.PrqlHeaderNameCompletionContributor"/>
         <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.DirectiveCompletionContributor"/>
         <multiHostInjector implementation="org.mvnsearch.plugins.prql.lang.injector.SQLLanguageInjector"/>
