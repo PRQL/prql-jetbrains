@@ -4,6 +4,16 @@
 
 ## [Unreleased]
 
+## [0.2.0]
+
+### Added
+
+* PRQL Injection for `@PRQL` annotation in Java
+
+### Fixed
+
+* `sort -age` marked as error now
+
 ## [0.1.0]
 
 ### Added
