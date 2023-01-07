@@ -7,7 +7,6 @@ import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
 import org.mvnsearch.plugins.prql.lang.PrqlLanguage
 import org.mvnsearch.plugins.prql.lang.psi.PrqlPrqlHeaderName
-import org.mvnsearch.plugins.prql.lang.psi.PrqlPrqlHeaderValue
 import org.mvnsearch.plugins.prql.lang.psi.PrqlTypes
 
 class PrqlHeaderNameCompletionContributor : CompletionContributor() {
