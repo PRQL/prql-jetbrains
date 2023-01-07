@@ -11,6 +11,7 @@
 * PRQL Injection for `@PRQL` annotation in Java
 * Icon support for completion items
 * SQL transpile by `prql-comiler` command line
+* Table name completion if datasource setup in IDE
 
 ### Fixed
 
