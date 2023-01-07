@@ -10,6 +10,7 @@ Features:
 - Code highlight
 - SQL injection
 - Code completion
+- SQL transpile support by `prql-compiler` command line: install it by `cargo install prql-compiler`
 
 <!-- Plugin description end -->
 
@@ -27,7 +28,7 @@ Features:
 
 # Todo
 
-* SQL Transform
+* Run PRQL: https://intellij-support.jetbrains.com/hc/en-us/community/posts/360006491899-Run-sql-statement-programatically
 
 # References
 
