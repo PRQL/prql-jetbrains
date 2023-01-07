@@ -2,6 +2,7 @@ package org.mvnsearch.plugins.prql.lang.completion
 
 import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
+import com.intellij.icons.AllIcons
 import com.intellij.patterns.PlatformPatterns.psiElement
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.parentOfType
@@ -27,26 +28,26 @@ class DatabaseNameCompletionContributor : CompletionContributor() {
                     prqlStatement?.let {
                         if (it.text.contains("sql_dialect:")) {
                             result.addElement(LookupElementBuilder.create("ansi").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("bigquery").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("clickhouse").withIcon(DatabaseIcons.Dbms))
+                            result.addElement(LookupElementBuilder.create("bigquery").withIcon(AllIcons.Providers.BigQuery))
+                            result.addElement(LookupElementBuilder.create("clickhouse").withIcon(AllIcons.Providers.ClickHouse))
                             result.addElement(LookupElementBuilder.create("generic").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("hive").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("mssql").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("mysql").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("postgres").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("sqlite").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("snowflake").withIcon(DatabaseIcons.Dbms))
+                            result.addElement(LookupElementBuilder.create("hive").withIcon(AllIcons.Providers.Hive))
+                            result.addElement(LookupElementBuilder.create("mssql").withIcon(AllIcons.Providers.SqlServer))
+                            result.addElement(LookupElementBuilder.create("mysql").withIcon(AllIcons.Providers.Mysql))
+                            result.addElement(LookupElementBuilder.create("postgres").withIcon(AllIcons.Providers.Postgresql))
+                            result.addElement(LookupElementBuilder.create("sqlite").withIcon(AllIcons.Providers.Sqlite))
+                            result.addElement(LookupElementBuilder.create("snowflake").withIcon(AllIcons.Providers.Snowflake))
                         } else if (it.text.contains("target:")) {
                             result.addElement(LookupElementBuilder.create("sql.ansi").withPresentableText("ansi").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("sql.bigquery").withPresentableText("bigquery").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("sql.clickhouse").withPresentableText("clickhouse").withIcon(DatabaseIcons.Dbms))
+                            result.addElement(LookupElementBuilder.create("sql.bigquery").withPresentableText("bigquery").withIcon(AllIcons.Providers.BigQuery))
+                            result.addElement(LookupElementBuilder.create("sql.clickhouse").withPresentableText("clickhouse").withIcon(AllIcons.Providers.ClickHouse))
                             result.addElement(LookupElementBuilder.create("sql.generic").withPresentableText("generic").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("sql.hive").withPresentableText("hive").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("sql.mssql").withPresentableText("mssql").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("sql.mysql").withPresentableText("mysql").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("sql.postgres").withPresentableText("postgres").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("sql.sqlite").withPresentableText("sqlite").withIcon(DatabaseIcons.Dbms))
-                            result.addElement(LookupElementBuilder.create("sql.snowflake").withPresentableText("snowflake").withIcon(DatabaseIcons.Dbms))
+                            result.addElement(LookupElementBuilder.create("sql.hive").withPresentableText("hive").withIcon(AllIcons.Providers.Hive))
+                            result.addElement(LookupElementBuilder.create("sql.mssql").withPresentableText("mssql").withIcon(AllIcons.Providers.SqlServer))
+                            result.addElement(LookupElementBuilder.create("sql.mysql").withPresentableText("mysql").withIcon(AllIcons.Providers.Mysql))
+                            result.addElement(LookupElementBuilder.create("sql.postgres").withPresentableText("postgres").withIcon(AllIcons.Providers.Postgresql))
+                            result.addElement(LookupElementBuilder.create("sql.sqlite").withPresentableText("sqlite").withIcon(AllIcons.Providers.Sqlite))
+                            result.addElement(LookupElementBuilder.create("sql.snowflake").withPresentableText("snowflake").withIcon(AllIcons.Providers.Snowflake))
                         }
                     }
                 }
