@@ -25,7 +25,7 @@ class JustRunLineMarkerContributor : RunLineMarkerProvider() {
     }
 
     override fun getIcon(): Icon {
-        return PrqlIcons.COPY_ICON
+        return icons.DatabaseIcons.Sql
     }
 
     override fun getLineMarkerInfo(psiElement: PsiElement): LineMarkerInfo<*>? {
