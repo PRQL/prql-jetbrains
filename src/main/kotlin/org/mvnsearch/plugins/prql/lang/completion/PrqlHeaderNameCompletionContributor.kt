@@ -20,8 +20,8 @@ class PrqlHeaderNameCompletionContributor : CompletionContributor() {
                     context: ProcessingContext,
                     result: CompletionResultSet
                 ) {
-                    result.addElement(LookupElementBuilder.create("target:").withPresentableText("target"))
-                    result.addElement(LookupElementBuilder.create("version:").withPresentableText("version"))
+                    result.addElement(LookupElementBuilder.create("target:").withPresentableText("target").withIcon(icons.DatabaseIcons.Extension))
+                    result.addElement(LookupElementBuilder.create("version:").withPresentableText("version").withIcon(icons.DatabaseIcons.Extension))
                 }
             }
         )
