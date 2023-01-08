@@ -15,8 +15,8 @@ class PrqlAnnotationSQLLanguageInjector : MultiHostInjector, DumbAware {
 
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
         if (context is PsiAnnotation) {
-            val qualifiedName = context.qualifiedName!!
-            if (qualifiedName.endsWith(".PRQL")) {
+            val qualifiedName = context.qualifiedName
+            if (qualifiedName!=null && qualifiedName.endsWith(".PRQL")) {
                 context.parameterList.attributes.forEach { attribute ->
                     val name = attribute.name
                     val prqlCodeBlock = attribute.value
