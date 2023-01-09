@@ -19,9 +19,9 @@ import java.awt.datatransfer.StringSelection
 import javax.swing.Icon
 
 @Suppress("DialogTitleCapitalization")
-class JustRunLineMarkerContributor : RunLineMarkerProvider() {
+class PrqlRunLineMarkerContributor : RunLineMarkerProvider() {
     override fun getName(): String {
-        return "run-just-recipe"
+        return "prql-transpile-sql"
     }
 
     override fun getIcon(): Icon {
