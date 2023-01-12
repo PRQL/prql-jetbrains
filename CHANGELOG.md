@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.2.1]
+
+### Fixed
+
+* Some bugs fixed
+
 ## [0.2.0]
 
 ### Added
