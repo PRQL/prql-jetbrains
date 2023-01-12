@@ -10,7 +10,7 @@ object Prql {
             return File(userHome, ".cargo/bin/prql-compiler").absolutePath
         }
         return if (SystemInfo.isWindows) {
-            return "just"
+            return "prql-compiler"
         } else {
             if (File("/usr/local/bin/prql-compiler").exists()) {
                 "/usr/local/bin/prql-compiler"
