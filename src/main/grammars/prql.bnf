@@ -23,6 +23,7 @@
               COLON       =  ':'
               COMMA       =  ','
               EQ          =  '='
+              EXCL        =  '!'
               EXCLEQ      =  '!='
               EQEQ        =  '=='
               PLUS        =  '+'

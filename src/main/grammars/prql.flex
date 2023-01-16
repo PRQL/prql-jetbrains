@@ -74,6 +74,7 @@ INDENTED_STRING = ("\"\"\"")[^"\"\"\""]*("\"\"\"")
   ":"                             { return COLON; }
   ","                             { return COMMA; }
   "."                             { return DOT; }
+  "!"                             { return EXCL; }
   ".."                            { return DOTDOT; }
   "="                             { return EQ; }
   "!="                            { return EXCLEQ; }
