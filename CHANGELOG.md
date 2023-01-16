@@ -12,6 +12,7 @@
 * append support
 * Excluding columns: `select ![title, composer]`
 * Numbers can now contain underscores: `select [ small = 1.000_000_1, big = 5_000_000]`
+* Use `prqlc` instead of `prql-compiler` command line tool: please install it by `cargo install --bins --features=cli prql-compiler`
 
 ### Changed
 
