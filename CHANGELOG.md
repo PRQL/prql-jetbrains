@@ -4,6 +4,19 @@
 
 ## [Unreleased]
 
+## [0.4.0]
+
+### Added
+
+* switch enhancement
+* append support
+* Excluding columns: `select ![title, composer]`
+* Numbers can now contain underscores: `select [ small = 1.000_000_1, big = 5_000_000]`
+
+### Changed
+
+* Plugin version now follows PRQL version
+
 ## [0.2.1]
 
 ### Fixed
