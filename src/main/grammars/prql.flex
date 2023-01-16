@@ -95,7 +95,7 @@ INDENTED_STRING = ("\"\"\"")[^"\"\"\""]*("\"\"\"")
   "??"                            { return COALESCE; }
   "null"                          { return NULL; }
 
-  "prql"|"func"|"table"|"aggregate"|"derive"|"filter"|"from"|"group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union"
+  "prql"|"func"|"table"|"aggregate"|"derive"|"filter"|"from"|"group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append"
                                   { return RESERVED_KEYWORD; }
    "min"|"max"|"count"|"average"|"stddev"|"avg"|"sum"|"count_distinct"
                                   { return AGGREGATE_FUNCTION; }

@@ -106,7 +106,7 @@ func_param ::= IDENTIFIER (COLON func_param_value)?
 func_param_value ::= INTEGER_LITERAL | DOUBLE_LITERAL | STRING_LITERAL | DATE_LITERAL |TIME_LITERAL| TIMESTAMP_LITERAL
 stmt ::= stmt_prql_directive | stmt_def | stmt_pipe_line
 stmt_def ::= stmt_func_def | stmt_table_def
-stmt_pipe_line ::= stmt_from | stmt_union | stmt_concat| stmt_func_def | stmt_table_def | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window | stmt_group
+stmt_pipe_line ::= stmt_from | stmt_union | stmt_append | stmt_concat| stmt_func_def | stmt_table_def | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window | stmt_group
 // prql statement
 stmt_prql_directive ::= 'prql' prql_header_name COLON prql_header_value {pin=1}
 prql_header_name ::= IDENTIFIER
@@ -125,6 +125,8 @@ stmt_table_pipes_body ::=  (stmt_pipe_line | NEW_LINE)*
 stmt_from ::= 'from' table_variant {pin=1}
 // union statement
 stmt_union ::= 'union' table_variant {pin=1}
+// append statement
+stmt_append ::= 'append' table_variant {pin=1}
 // concat statement
 stmt_concat ::= 'concat' table_variant {pin=1}
 // take statement
