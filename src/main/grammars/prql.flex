@@ -50,8 +50,8 @@ COMMENT=("#")[^\n]*
 // Literals
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-INTEGER_LITERAL=\d+
-DOUBLE_LITERAL=(\d+)(\.)(\d+)
+INTEGER_LITERAL=[\d][\d_]*
+DOUBLE_LITERAL=([\d][\d_]*)(\.)([\d][\d_]*)
 
 DATE_LITERAL = ("@")(\d{4})-(\d{2})-(\d{2})
 TIME_LITERAL = ("@")(\d{2}):(\d{2})(:\d{2})?
