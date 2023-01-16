@@ -9,10 +9,8 @@
     <depends optional="true" config-file="prql-java.xml">com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="prql"
-                  implementationClass="org.mvnsearch.plugins.prql.lang.psi.PrqlFileType"
-                  fieldName="INSTANCE" fileNamesCaseInsensitive="false"
-                  language="PRQL" extensions="prql"/>
+        <fileType name="prql" implementationClass="org.mvnsearch.plugins.prql.lang.psi.PrqlFileType"
+                  fieldName="INSTANCE" language="PRQL" extensions="prql"/>
         <lang.parserDefinition language="PRQL"
                                implementationClass="org.mvnsearch.plugins.prql.lang.parser.PrqlParserDefinition"/>
         <annotator language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.insight.PrqlAnnotator"/>
@@ -23,8 +21,8 @@
         <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.DirectiveCompletionContributor"/>
         <multiHostInjector implementation="org.mvnsearch.plugins.prql.lang.injector.SQLLanguageInjector"/>
         <codeInsight.lineMarkerProvider language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.run.PrqlRunLineMarkerContributor"/>
-        <notificationGroup id="PRQL Info" displayType="BALLOON" isLogByDefault="false" />
-        <notificationGroup id="PRQL Error" displayType="BALLOON" isLogByDefault="false" />
+        <notificationGroup id="PRQL Info" displayType="BALLOON" isLogByDefault="false"/>
+        <notificationGroup id="PRQL Error" displayType="BALLOON" isLogByDefault="false"/>
     </extensions>
 
     <applicationListeners>
