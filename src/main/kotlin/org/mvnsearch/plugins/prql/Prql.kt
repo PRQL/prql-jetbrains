@@ -6,16 +6,16 @@ import java.io.File
 object Prql {
     fun getPrqlCompilerCmdAbsolutionPath(): String {
         val userHome = System.getProperty("user.home")
-        if (File(userHome, ".cargo/bin/prql-compiler").exists()) {
-            return File(userHome, ".cargo/bin/prql-compiler").absolutePath
+        if (File(userHome, ".cargo/bin/prqlc").exists()) {
+            return File(userHome, ".cargo/bin/prqlc").absolutePath
         }
         return if (SystemInfo.isWindows) {
-            return "prql-compiler"
+            return "prqlc"
         } else {
-            if (File("/usr/local/bin/prql-compiler").exists()) {
-                "/usr/local/bin/prql-compiler"
+            if (File("/usr/local/bin/prqlc").exists()) {
+                "/usr/local/bin/prqlc"
             } else {
-                "prql-compiler"
+                "prqlc"
             }
         }
     }
