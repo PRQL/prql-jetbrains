@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.4.1]
+
+### Fixed
+
+* Remove DumbAware to avoid index not ready exception
+
 ## [0.4.0]
 
 ### Added
