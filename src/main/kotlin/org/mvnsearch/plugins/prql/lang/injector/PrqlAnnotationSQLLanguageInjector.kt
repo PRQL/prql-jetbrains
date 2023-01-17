@@ -10,13 +10,12 @@ import com.intellij.psi.PsiLanguageInjectionHost
 import org.mvnsearch.plugins.prql.lang.PrqlLanguage
 
 
-class PrqlAnnotationSQLLanguageInjector : MultiHostInjector, DumbAware {
+class PrqlAnnotationSQLLanguageInjector : MultiHostInjector {
 
 
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
         if (context is PsiAnnotation) {
-            val qualifiedName = context.qualifiedName
-            if (qualifiedName!=null && qualifiedName.endsWith(".PRQL")) {
+            if (context.text.startsWith("@PRQL(")) {
                 context.parameterList.attributes.forEach { attribute ->
                     val name = attribute.name
                     val prqlCodeBlock = attribute.value
@@ -51,9 +50,7 @@ class PrqlAnnotationSQLLanguageInjector : MultiHostInjector, DumbAware {
                         }
                     }
                 }
-
             }
-
         }
     }
 
