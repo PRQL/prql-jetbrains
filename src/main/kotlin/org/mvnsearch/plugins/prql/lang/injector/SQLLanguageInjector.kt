@@ -11,7 +11,7 @@ import org.mvnsearch.plugins.prql.lang.psi.PrqlStmtTableFromSql
 import org.mvnsearch.plugins.prql.lang.psi.PrqlTableFromSql
 
 
-class SQLLanguageInjector : MultiHostInjector, DumbAware {
+class SQLLanguageInjector : MultiHostInjector {
     private val sqlLanguage: Language = Language.findLanguageByID("SQL")!!
 
 
