@@ -9,7 +9,7 @@ plugins {
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.7.22"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.11.0"
+    id("org.jetbrains.intellij") version "1.12.0"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "2.0.0"
     // Gradle Qodana Plugin
@@ -37,8 +37,8 @@ kotlin {
 intellij {
     pluginName.set(properties("pluginName"))
     type.set(properties("platformType"))
-    version.set(properties("platformVersion"))
-    //localPath.set(System.getProperty("user.home") + "/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIU/2022.3/56e5440ce30b03c913ff231a46cb1ba6ac4df63/ideaIU-2022.3")
+    //version.set(properties("platformVersion"))
+    localPath.set(System.getProperty("user.home") + "/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.idea/ideaIU/2022.3/56e5440ce30b03c913ff231a46cb1ba6ac4df63/ideaIU-2022.3")
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
