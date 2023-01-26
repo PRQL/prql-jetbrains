@@ -61,6 +61,7 @@ RAW_LITERAL   = (\`[^\\\`\r\n]*\`)
 CHAR_LITERAL   = (\'[^\\\'\r\n]*\')
 STRING_LITERAL = (\"[^\\\"\r\n]*\")
 INDENTED_STRING = ("\"\"\"")[^"\"\"\""]*("\"\"\"")
+INDENTED_STRING_QUOTE = (''')[^''']*(''')
 
 
 %%
@@ -95,7 +96,7 @@ INDENTED_STRING = ("\"\"\"")[^"\"\"\""]*("\"\"\"")
   "??"                            { return COALESCE; }
   "null"                          { return NULL; }
 
-  "prql"|"func"|"table"|"aggregate"|"derive"|"filter"|"from"|"group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append"
+  "prql"|"func"|"table"|"aggregate"|"derive"|"filter"|"from" | "from_text" | "group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append"
                                   { return RESERVED_KEYWORD; }
    "min"|"max"|"count"|"average"|"stddev"|"avg"|"sum"|"count_distinct"
                                   { return AGGREGATE_FUNCTION; }
@@ -117,6 +118,8 @@ INDENTED_STRING = ("\"\"\"")[^"\"\"\""]*("\"\"\"")
 
   "s" {INDENTED_STRING}            { return S_INDENTED_STRING; }
   "s" {STRING_LITERAL}             { return S_STRING; }
+  {INDENTED_STRING_QUOTE}   { return INDENTED_STRING_QUOTE; }
+  {INDENTED_STRING}   { return INDENTED_STRING; }
   {DATE_LITERAL}             { return DATE_LITERAL; }
   {TIME_LITERAL}             { return TIME_LITERAL; }
   {TIMESTAMP_LITERAL}             { return TIMESTAMP_LITERAL; }
