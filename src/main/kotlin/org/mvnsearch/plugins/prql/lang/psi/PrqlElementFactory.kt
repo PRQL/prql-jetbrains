@@ -24,4 +24,9 @@ object PrqlElementFactory {
         return stmtFrom.tableVariant!!.firstChild as PrqlTableFromSql
     }
 
+    fun createTableFromText(project: Project, format:String, codeBlock: String): PrqlStmtFromTextStringArg {
+          val stmtFrom = createFile(project, "from_text format:$format $codeBlock").firstChild as PrqlStmtFrom
+          return stmtFrom.tableVariant!!.lastChild as PrqlStmtFromTextStringArg
+      }
+
 }
