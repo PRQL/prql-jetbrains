@@ -10,7 +10,7 @@ Features:
 - Code highlight
 - SQL injection
 - Code completion
-- SQL transpile support by `prqlc` command line: install it by `cargo install --features=cli prql-compiler`
+- SQL transpile support by `prqlc` command line: install it by `cargo install prqlc`
 
 <!-- Plugin description end -->
 
