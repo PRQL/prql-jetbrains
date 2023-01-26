@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.4.2]
+
+### Added
+
+* `from_text` support
+
 ## [0.4.1]
 
 ### Fixed
