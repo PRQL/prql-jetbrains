@@ -30,7 +30,7 @@ class PrqlRunLineMarkerContributor : RunLineMarkerProvider() {
 
     override fun getLineMarkerInfo(psiElement: PsiElement): LineMarkerInfo<*>? {
         val elementType = psiElement.elementType
-        if (elementType == PrqlTypes.STMT_FROM) {
+        if (elementType == PrqlTypes.STMT_FROM || elementType == PrqlTypes.STMT_FROM_TEXT) {
             val text = psiElement.containingFile.text
             return LineMarkerInfo(
                 psiElement,
