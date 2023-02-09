@@ -159,7 +159,7 @@ stmt_join ::= 'join' (stmt_join_side_expression)? stmt_join_table stmt_join_cond
 stmt_join_side_expression ::= 'side' COLON ('inner'| 'left'|'right'| 'full')
 stmt_join_table ::= table_variant
 stmt_join_column ::= (column_alias DOT column_name) | column_name
-stmt_join_pair ::= (stmt_join_column? EQEQ stmt_join_column) | S_STRING | S_INDENTED_STRING
+stmt_join_pair ::= ( LPAREN? stmt_join_column? EQEQ stmt_join_column RPAREN? ) | S_STRING | S_INDENTED_STRING
 stmt_join_conditions ::= LBRACK stmt_join_pair (COMMA stmt_join_pair)* RBRACK
 //window statement
 stmt_window ::= 'window' (stmt_window_rows_expression | stmt_window_expanding_expression | stmt_window_rolling_expression)? stmt_window_range_expression? stmt_window_block? {pin=1}
