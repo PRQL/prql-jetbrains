@@ -118,7 +118,8 @@ class PrqlAnnotator : Annotator {
                 highLightColumnsInFString(element, holder)
             }
 
-            PrqlTypes.S_STRING -> {
+            PrqlTypes.S_STRING,
+            PrqlTypes.S_INDENTED_STRING -> {
                 highLightSString(element, holder)
             }
 
