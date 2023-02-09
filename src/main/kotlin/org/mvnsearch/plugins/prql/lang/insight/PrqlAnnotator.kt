@@ -115,7 +115,7 @@ class PrqlAnnotator : Annotator {
             }
 
             PrqlTypes.F_STRING -> {
-                highLightColumnsInFString(element, holder)
+                highLightFString(element, holder)
             }
 
             PrqlTypes.S_STRING,
@@ -167,9 +167,38 @@ class PrqlAnnotator : Annotator {
             val range = TextRange(rangeOffset + quotaOffset, rangeOffset + quotEndOffset)
             holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(range).textAttributes(SqlColors.SQL_STRING).create()
         }
+        // high light column name
+        var offset = getLeftBraceInSString(text,0)
+        while (offset > 0) {
+            val endOffset = text.indexOf("}", offset + 1)
+            offset = if (endOffset > offset) {
+                // high light column name
+                val columnNameRange = TextRange(rangeOffset + offset + 1, rangeOffset + endOffset)
+                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(columnNameRange).textAttributes(SqlColors.SQL_COLUMN).create()
+                // high light brace { }
+                val lbraceRange = TextRange(rangeOffset + offset, rangeOffset + offset + 1)
+                val rbraceRange = TextRange(rangeOffset + endOffset, rangeOffset + endOffset + 1)
+                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(lbraceRange).textAttributes(SqlColors.SQL_BRACES).create()
+                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(rbraceRange).textAttributes(SqlColors.SQL_BRACES).create()
+                getLeftBraceInSString(text, endOffset + 1)
+            } else {
+                -1
+            }
+        }
     }
 
-    private fun highLightColumnsInFString(element: PsiElement, holder: AnnotationHolder) {
+    private fun getLeftBraceInSString(text: String, offset: Int): Int {
+        val textLength = text.length
+        var leftBraceOffset = text.indexOf("{", offset)
+        if (leftBraceOffset > 0 && leftBraceOffset < textLength - 1) {
+            if (text[leftBraceOffset + 1] == '{') {
+                leftBraceOffset += 1
+            }
+        }
+        return leftBraceOffset
+    }
+
+    private fun highLightFString(element: PsiElement, holder: AnnotationHolder) {
         val rangeOffset = element.textRange.startOffset
         val text = element.text
         //high light as string
