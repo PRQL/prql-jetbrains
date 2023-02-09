@@ -10,6 +10,7 @@
 
 * `let` support for table definition
 * Syntax high light for S-Strings and F-Strings
+* Column high light for S-Strings and F-Strings
 * Add S-Strings for Join
 * `duckdb` added in dialects
 
