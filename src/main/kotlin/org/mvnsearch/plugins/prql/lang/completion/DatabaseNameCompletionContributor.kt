@@ -48,6 +48,7 @@ class DatabaseNameCompletionContributor : CompletionContributor() {
                             result.addElement(LookupElementBuilder.create("sql.postgres").withPresentableText("postgres").withIcon(AllIcons.Providers.Postgresql))
                             result.addElement(LookupElementBuilder.create("sql.sqlite").withPresentableText("sqlite").withIcon(AllIcons.Providers.Sqlite))
                             result.addElement(LookupElementBuilder.create("sql.snowflake").withPresentableText("snowflake").withIcon(AllIcons.Providers.Snowflake))
+                            result.addElement(LookupElementBuilder.create("sql.duckdb").withPresentableText("duckdb").withIcon(AllIcons.Providers.DuckDB))
                         }
                     }
                 }
