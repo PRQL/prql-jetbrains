@@ -118,7 +118,7 @@ stmt_func_param ::= IDENTIFIER
 stmt_func_body ::= expr
 stmt_func_def_param ::= stmt_func_param (COLON func_param_value)?
 // table statement
-stmt_table_def ::= 'table' table_name EQ ( stmt_table_from_sql | stmt_table_from_pipes ) { pin=1 mixin="org.mvnsearch.plugins.prql.lang.psi.PrqlStmtTableDefElementImpl" implements="org.mvnsearch.plugins.prql.lang.psi.PrqlNamedElement" methods=[getKey getValue getName setName getNameIdentifier getPresentation] }
+stmt_table_def ::= ('table' | 'let') table_name EQ ( stmt_table_from_sql | stmt_table_from_pipes ) { pin=1 mixin="org.mvnsearch.plugins.prql.lang.psi.PrqlStmtTableDefElementImpl" implements="org.mvnsearch.plugins.prql.lang.psi.PrqlNamedElement" methods=[getKey getValue getName setName getNameIdentifier getPresentation] }
 stmt_table_from_sql ::= S_INDENTED_STRING {pin=1 implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableDefSQLInjectionHost"}
 stmt_table_from_pipes ::= (LPAREN NEW_LINE* stmt_table_pipes_body NEW_LINE* RPAREN)
 stmt_table_pipes_body ::=  (stmt_pipe_line | NEW_LINE)*
