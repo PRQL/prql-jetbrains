@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+## [0.5.0]
+
+### Added
+
+* `let` support for table definition
+* Syntax high light for S-Strings and F-Strings
+* Add S-Strings for Join
+* `duckdb` added in dialects
+
 ## [0.4.2]
 
 ### Added
