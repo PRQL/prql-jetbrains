@@ -118,6 +118,10 @@ class PrqlAnnotator : Annotator {
                 highLightColumnsInFString(element, holder)
             }
 
+            PrqlTypes.S_STRING -> {
+                highLightSString(element, holder)
+            }
+
             PrqlTypes.AGGREGATE_FUNCTION -> {
                 holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
                     .textAttributes(SqlColors.SQL_PROCEDURE).create()
@@ -148,9 +152,33 @@ class PrqlAnnotator : Annotator {
         }
     }
 
+    private fun highLightSString(element: PsiElement, holder: AnnotationHolder) {
+        val rangeOffset = element.textRange.startOffset
+        val text = element.text
+        val separator = if (text.contains("\"\"\"")) {
+            "\"\"\""
+        } else {
+            "\""
+        }
+        val quotaOffset = text.indexOf(separator)
+        val quotEndOffset = text.lastIndexOf(separator) + separator.length
+        if (quotEndOffset > quotaOffset) {
+            val range = TextRange(rangeOffset + quotaOffset, rangeOffset + quotEndOffset)
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(range).textAttributes(SqlColors.SQL_STRING).create()
+        }
+    }
+
     private fun highLightColumnsInFString(element: PsiElement, holder: AnnotationHolder) {
         val rangeOffset = element.textRange.startOffset
         val text = element.text
+        //high light as string
+        val quotaOffset = text.indexOf("\"")
+        val quotEndOffset = text.lastIndexOf("\"") + 1
+        if (quotEndOffset > quotaOffset) {
+            val range = TextRange(rangeOffset + quotaOffset, rangeOffset + quotEndOffset)
+            holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(range).textAttributes(SqlColors.SQL_STRING).create()
+        }
+        // high light column name
         var offset = text.indexOf("{")
         while (offset > 0) {
             val endOffset = text.indexOf("}", offset + 1)
