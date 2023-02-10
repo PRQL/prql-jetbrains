@@ -11,6 +11,7 @@ Features:
 - SQL injection
 - Code completion
 - SQL transpile support by `prqlc` command line: install it by `cargo install prqlc`
+- SQL Target dialect support from `SQL dialects`
 
 <!-- Plugin description end -->
 
