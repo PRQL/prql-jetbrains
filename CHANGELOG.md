@@ -8,6 +8,10 @@
 
 * Target dialect support from `Settings` -> `Languages & Frameworks` -> `SQL dialects`
 
+### Fixed
+
+* table name completion with multi schemas, for example `Postgres`.
+
 ## [0.5.0]
 
 ### Added
