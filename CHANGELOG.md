@@ -4,6 +4,10 @@
 
 ## [Unreleased]
 
+### Added
+
+* Target dialect support from `settings` -> `Languages & Frameworks` -> `SQL dialects`
+
 ## [0.5.0]
 
 ### Added
