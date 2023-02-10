@@ -34,4 +34,4 @@ Features:
 
 * PRQL Home: https://prql-lang.org/
 * PRQL Grammar: https://github.com/PRQL/prql/blob/main/prql-lezer/src/prql.grammar#L32
-* Syntax and Parsing Notes: https://github.com/chris-pikul/go-prql/blob/main/SYNTAX-NOTES.md
+* PRQL extension for Visual Studio Code: https://marketplace.visualstudio.com/items?itemName=PRQL-lang.prql-vscode
