@@ -26,12 +26,18 @@ class TableNameCompletionContributor : CompletionContributor() {
                     val dataSources = dbPsiFacade.dataSources
                     if (dataSources.isNotEmpty()) {
                         val dataSource = dataSources[0]
-                        val defaultSchema = DasUtil.getSchemas(dataSource).firstOrNull();
-                        if (defaultSchema != null) {
-                            val tables = DasUtil.getTables(dataSource)
-                            for (table in tables) {
-                                if (table.dasParent == defaultSchema) {
-                                    result.addElement(LookupElementBuilder.create(table.name).withPresentableText(table.name).withIcon(DatabaseIcons.Table))
+                        val schemas = DasUtil.getSchemas(dataSource).toList()
+                        if (schemas.isNotEmpty()) {
+                            var defaultSchema = schemas.firstOrNull { it.name == "public" }
+                            if (defaultSchema == null) {
+                                defaultSchema = schemas[0]
+                            }
+                            if (defaultSchema != null) {
+                                val tables = DasUtil.getTables(dataSource)
+                                for (table in tables) {
+                                    if (table.dasParent == defaultSchema) {
+                                        result.addElement(LookupElementBuilder.create(table.name).withPresentableText(table.name).withIcon(DatabaseIcons.Table))
+                                    }
                                 }
                             }
                         }
