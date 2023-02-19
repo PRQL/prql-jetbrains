@@ -22,97 +22,6 @@ class PrqlAnnotator : Annotator {
 
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         when (element.elementType) {
-            PrqlTypes.RESERVED_KEYWORD -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_KEYWORD).create()
-            }
-
-            PrqlTypes.FUNC_NAME -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_PROCEDURE).create()
-            }
-
-            PrqlTypes.RAW_LITERAL,
-            PrqlTypes.COLUMN_NAME -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_COLUMN).create()
-            }
-
-            PrqlTypes.TABLE_NAME -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_TABLE).create()
-            }
-
-            PrqlTypes.COMMENT -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange).textAttributes(SqlColors.SQL_COMMENT).create()
-            }
-
-            PrqlTypes.STRING_LITERAL,
-            PrqlTypes.CHAR_LITERAL,
-            PrqlTypes.INDENTED_STRING -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_STRING).create()
-            }
-
-            PrqlTypes.DOUBLE_LITERAL,
-            PrqlTypes.INTEGER_LITERAL -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_NUMBER).create()
-            }
-
-            PrqlTypes.COMMA -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_COMMA).create()
-            }
-
-            PrqlTypes.LBRACE,
-            PrqlTypes.RBRACE -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_BRACES).create()
-            }
-
-            PrqlTypes.LBRACK,
-            PrqlTypes.RBRACK -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_BRACKETS).create()
-            }
-
-            PrqlTypes.LPAREN,
-            PrqlTypes.RPAREN -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_PARENS).create()
-            }
-
-            PrqlTypes.DOT -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_DOT).create()
-            }
-
-            PrqlTypes.STMT_FUNC_DEF_PARAM -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_PARAMETER).create()
-            }
-
-            PrqlTypes.PARAM -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_VARIABLE).create()
-            }
-
-            PrqlTypes.DATE_LITERAL,
-            PrqlTypes.TIME_LITERAL,
-            PrqlTypes.TIMESTAMP_LITERAL,
-            PrqlTypes.INTERVAL_LITERAL -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_SYNTHETIC_ENTITY).create()
-            }
-
-            // literals support by PRQL
-            PrqlTypes.NULL,
-            PrqlTypes.BOOL_FALSE,
-            PrqlTypes.BOOL_TRUE -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_SYNTHETIC_ENTITY).create()
-            }
 
             PrqlTypes.F_STRING -> {
                 highLightFString(element, holder)
@@ -121,11 +30,6 @@ class PrqlAnnotator : Annotator {
             PrqlTypes.S_STRING,
             PrqlTypes.S_INDENTED_STRING -> {
                 highLightSString(element, holder)
-            }
-
-            PrqlTypes.AGGREGATE_FUNCTION -> {
-                holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(element.textRange)
-                    .textAttributes(SqlColors.SQL_PROCEDURE).create()
             }
 
             PrqlTypes.FUNC_CALL -> {  // high light function name
@@ -168,7 +72,7 @@ class PrqlAnnotator : Annotator {
             holder.newSilentAnnotation(HighlightSeverity.INFORMATION).range(range).textAttributes(SqlColors.SQL_STRING).create()
         }
         // high light column name
-        var offset = getLeftBraceInSString(text,0)
+        var offset = getLeftBraceInSString(text, 0)
         while (offset > 0) {
             val endOffset = text.indexOf("}", offset + 1)
             offset = if (endOffset > offset) {
