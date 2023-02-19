@@ -14,6 +14,8 @@
         <lang.parserDefinition language="PRQL"
                                implementationClass="org.mvnsearch.plugins.prql.lang.parser.PrqlParserDefinition"/>
         <annotator language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.insight.PrqlAnnotator"/>
+        <lang.syntaxHighlighterFactory language="PRQL"
+                                       implementationClass="org.mvnsearch.plugins.prql.lang.lighter.PrqlSyntaxHighlighterFactory"/>
         <lang.commenter language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.comment.PrqlCommenter"/>
         <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.DatabaseNameCompletionContributor"/>
         <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.TableNameCompletionContributor"/>
