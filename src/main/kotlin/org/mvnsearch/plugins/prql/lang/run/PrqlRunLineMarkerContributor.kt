@@ -6,6 +6,7 @@ import com.intellij.database.console.JdbcConsoleService
 import com.intellij.database.datagrid.DataRequest
 import com.intellij.database.util.DbImplUtilCore
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
 import com.intellij.util.ObjectUtils
@@ -46,7 +47,9 @@ class PrqlRunLineMarkerContributor : PrqlBaseLienMarkerContributor() {
                                 raiseError(psiElement.project, "Failed to find JDBC Console", "Please setup database and active JDBC Console first")
                             } else {
                                 val jdbcConsole = ObjectUtils.tryCast(consoles[0], JdbcConsole::class.java)!!
-                                jdbcConsole.consoleView.editorDocument.setText(sqlQuery)
+                                ApplicationManager.getApplication().runWriteAction {
+                                    jdbcConsole.consoleView.editorDocument.setText(sqlQuery)
+                                }
                                 val queryRequest = DataRequest.newRequest(jdbcConsole, sqlQuery, 0, DbImplUtilCore.getPageSize(jdbcConsole.dataSource.dbms), 0, 0)
                                 jdbcConsole.messageBus.dataProducer.processRequest(queryRequest)
                             }
