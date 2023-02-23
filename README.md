@@ -12,6 +12,7 @@ Features:
 - Code completion
 - SQL transpile support by `prqlc` command line: install it by `cargo install prqlc`
 - SQL Target dialect support from `SQL dialects`
+- Execute PRQL by JDBC Console
 
 <!-- Plugin description end -->
 
@@ -29,7 +30,7 @@ Features:
 
 # Todo
 
-* Run PRQL: https://intellij-support.jetbrains.com/hc/en-us/community/posts/360006491899-Run-sql-statement-programatically
+* Column code completion
 
 # References
 
