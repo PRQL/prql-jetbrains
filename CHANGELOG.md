@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.5.2]
+
+### Added
+
+* Execution icon: execute PRQL by JDBC Console. Please set up local datasource first.
+
 ## [0.5.1]
 
 ### Added
