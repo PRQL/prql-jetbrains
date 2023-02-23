@@ -36,7 +36,7 @@ class PrqlRunLineMarkerContributor : PrqlBaseLienMarkerContributor() {
                     try {
                         val consoles = JdbcConsoleService.getInstance().getActiveConsoles(psiElement.project)
                         if (consoles.isEmpty()) {
-                            raiseError(psiElement.project, "Failed to find JDBC Console", "Please setup database and active JDBC Console first")
+                            raiseError(psiElement.project, "Failed to find active JDBC Console", "Please setup database and open a JDBC Console first")
                         } else {
                             val jdbcConsole = ObjectUtils.tryCast(consoles[0], JdbcConsole::class.java)!!
                             var sqlOrError = transformPrql(jdbcConsole.dataSource.defaultDialect, text + "\n", elt.project).trim()
