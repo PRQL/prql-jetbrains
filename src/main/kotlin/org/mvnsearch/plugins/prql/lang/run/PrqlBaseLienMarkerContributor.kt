@@ -13,11 +13,15 @@ import org.mvnsearch.plugins.prql.lang.psi.PrqlTypes
 
 open class PrqlBaseLienMarkerContributor : RunLineMarkerProvider() {
 
-    fun transformPrql(prqlCode: String, project: Project): String {
+    fun transformPrql(dialect: String?, prqlCode: String, project: Project): String {
         var prqlNewCode = prqlCode
         if (!prqlCode.contains("prql target:sql.")) {
-            val defaultDialect = SqlDialectMappings.getMapping(project, null)
-            val target = Prql.getTarget(defaultDialect.id)
+            val target = if (dialect != null) {
+                Prql.getTarget(dialect)
+            } else {
+                val defaultDialect = SqlDialectMappings.getMapping(project, null)
+                Prql.getTarget(defaultDialect.id)
+            }
             if (target != null) {
                 prqlNewCode = "prql target:sql.${target}\n" + prqlCode
             }
