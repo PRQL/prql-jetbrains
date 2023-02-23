@@ -24,6 +24,7 @@
         <multiHostInjector implementation="org.mvnsearch.plugins.prql.lang.injector.SQLLanguageInjector"/>
         <multiHostInjector implementation="org.mvnsearch.plugins.prql.lang.injector.FromTextLanguageInjector"/>
         <codeInsight.lineMarkerProvider language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.run.PrqlRunLineMarkerContributor"/>
+        <codeInsight.lineMarkerProvider language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.run.PrqlTranspileLineMarkerContributor"/>
         <notificationGroup id="PRQL Info" displayType="BALLOON" isLogByDefault="false"/>
         <notificationGroup id="PRQL Error" displayType="BALLOON" isLogByDefault="false"/>
     </extensions>
