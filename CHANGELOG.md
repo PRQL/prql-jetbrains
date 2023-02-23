@@ -8,7 +8,7 @@
 
 ### Added
 
-* Execution icon: execute PRQL by JDBC Console. Please set up local datasource first.
+* Execution icon: execute PRQL by JDBC Console. Please set up local datasource and open an active JDBC Console first.
 
 ## [0.5.1]
 
