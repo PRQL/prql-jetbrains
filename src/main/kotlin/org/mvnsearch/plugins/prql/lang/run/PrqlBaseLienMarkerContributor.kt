@@ -13,6 +13,7 @@ import org.mvnsearch.plugins.prql.lang.psi.PrqlTypes
 
 open class PrqlBaseLienMarkerContributor : RunLineMarkerProvider() {
 
+    @Throws(Exception::class)
     fun transformPrql(dialect: String?, prqlCode: String, project: Project): String {
         var prqlNewCode = prqlCode
         if (!prqlCode.contains("prql target:sql.")) {
@@ -34,7 +35,7 @@ open class PrqlBaseLienMarkerContributor : RunLineMarkerProvider() {
         return if (process.exitValue() == 0) {
             process.inputStream.bufferedReader().readText()
         } else {
-            process.errorStream.bufferedReader().readText()
+            throw Exception(process.errorStream.bufferedReader().readText())
         }
     }
 
