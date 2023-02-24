@@ -21,6 +21,8 @@
         <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.TableNameCompletionContributor"/>
         <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.PrqlHeaderNameCompletionContributor"/>
         <completion.contributor language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.completion.DirectiveCompletionContributor"/>
+        <lang.braceMatcher language="PRQL"
+                                  implementationClass="org.mvnsearch.plugins.prql.lang.insight.PrqlBraceMatcher"/>
         <multiHostInjector implementation="org.mvnsearch.plugins.prql.lang.injector.SQLLanguageInjector"/>
         <multiHostInjector implementation="org.mvnsearch.plugins.prql.lang.injector.FromTextLanguageInjector"/>
         <codeInsight.lineMarkerProvider language="PRQL" implementationClass="org.mvnsearch.plugins.prql.lang.run.PrqlRunLineMarkerContributor"/>
