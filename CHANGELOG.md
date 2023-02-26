@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.5.3]
+
+### Added
+
+* Code format support: use external `prqlc fmt` command line tool to format code
+* Brace matcher support
+
 ## [0.5.2]
 
 ### Added
