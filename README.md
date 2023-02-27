@@ -8,9 +8,10 @@ Features:
 
 - Syntax parsing
 - Code highlight
+- Code format
 - SQL injection
 - Code completion
-- SQL transpile support by `prqlc` command line: install it by `cargo install prqlc`
+- SQL transpile support
 - SQL Target dialect support from `SQL dialects`
 - Execute PRQL by JDBC Console
 
