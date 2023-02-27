@@ -7,8 +7,9 @@
 ## [0.5.3]
 
 ### Added
-
-* Code format support: use external `prqlc fmt` command line tool to format code
+                                       
+* Introduce prql-java library to call PRQL API instead of using `prqlc` command line, and no need to install `prqlc` anymore. 
+* Code format support
 * Brace matcher support
 
 ## [0.5.2]
