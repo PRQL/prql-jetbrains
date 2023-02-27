@@ -4,9 +4,8 @@ import com.intellij.formatting.service.AsyncDocumentFormattingService
 import com.intellij.formatting.service.AsyncFormattingRequest
 import com.intellij.formatting.service.FormattingService
 import com.intellij.psi.PsiFile
-import org.mvnsearch.plugins.prql.Prql
 import org.mvnsearch.plugins.prql.lang.psi.PrqlFile
-import java.io.File
+import org.prql.prql4j.PrqlCompiler
 
 
 class PrqlcExternalFormatter : AsyncDocumentFormattingService() {
@@ -16,30 +15,21 @@ class PrqlcExternalFormatter : AsyncDocumentFormattingService() {
     }
 
     override fun canFormat(psiFile: PsiFile): Boolean {
-        if (psiFile is PrqlFile) {
-            return File(Prql.getPrqlCompilerCmdAbsolutionPath()).exists()
-        }
-        return false
+        return psiFile is PrqlFile
     }
 
     override fun createFormattingTask(request: AsyncFormattingRequest): FormattingTask {
         val prqlCode = request.documentText
         return object : FormattingTask {
             override fun run() {
-                val process = ProcessBuilder().command(Prql.getPrqlCompilerCmdAbsolutionPath(), "fmt").start();
-                process.outputStream.use {
-                    it.write(prqlCode.toByteArray())
-                    it.flush()
-                }
-                process.waitFor()
-                if (process.exitValue() == 0) {
-                    var formattedCode = process.inputStream.bufferedReader().readText().trimEnd()
+                try {
+                    var formattedCode = PrqlCompiler.format(prqlCode).trimEnd()
                     if (prqlCode.endsWith("\n")) {
                         formattedCode += "\n"
                     }
                     request.onTextReady(formattedCode)
-                } else {
-                    request.onError("Failed to format code", process.errorStream.bufferedReader().readText())
+                } catch (e: Exception) {
+                    request.onError("Failed to format code", e.message ?: "Unknown error")
                 }
             }
 

@@ -9,6 +9,7 @@ import com.intellij.psi.util.elementType
 import com.intellij.sql.dialects.SqlDialectMappings
 import org.mvnsearch.plugins.prql.Prql
 import org.mvnsearch.plugins.prql.lang.psi.PrqlTypes
+import org.prql.prql4j.PrqlCompiler
 
 
 open class PrqlBaseLienMarkerContributor : RunLineMarkerProvider() {
@@ -27,16 +28,7 @@ open class PrqlBaseLienMarkerContributor : RunLineMarkerProvider() {
                 prqlNewCode = "prql target:sql.${target}\n" + prqlCode
             }
         }
-        val process = ProcessBuilder().command(Prql.getPrqlCompilerCmdAbsolutionPath(), "compile").start();
-        process.outputStream.use {
-            it.write(prqlNewCode.toByteArray())
-        }
-        process.waitFor()
-        return if (process.exitValue() == 0) {
-            process.inputStream.bufferedReader().readText()
-        } else {
-            throw Exception(process.errorStream.bufferedReader().readText())
-        }
+        return PrqlCompiler.toSql(prqlNewCode)
     }
 
     fun isPrqlFromElement(psiElement: PsiElement): Boolean {
