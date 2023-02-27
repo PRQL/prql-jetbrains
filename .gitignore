@@ -144,6 +144,7 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,jetbrains+all
 
+!libs/
 .qodana
 src/main/gen
 temp/
