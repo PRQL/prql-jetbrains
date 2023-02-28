@@ -31,6 +31,8 @@
         <notificationGroup id="PRQL Error" displayType="BALLOON" isLogByDefault="false"/>
         <notificationGroup id="prqlc fmt" displayType="BALLOON" isLogByDefault="false"/>
         <formattingService implementation="org.mvnsearch.plugins.prql.lang.format.PrqlcExternalFormatter"/>
+        <spellchecker.bundledDictionaryProvider
+                        implementation="org.mvnsearch.plugins.prql.ide.spell.PrqlBundledDictionariesProvider"/>
     </extensions>
 
     <applicationListeners>
