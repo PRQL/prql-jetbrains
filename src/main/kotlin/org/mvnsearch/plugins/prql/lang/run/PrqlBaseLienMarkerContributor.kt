@@ -16,19 +16,13 @@ open class PrqlBaseLienMarkerContributor : RunLineMarkerProvider() {
 
     @Throws(Exception::class)
     fun transformPrql(dialect: String?, prqlCode: String, project: Project): String {
-        var prqlNewCode = prqlCode
-        if (!prqlCode.contains("prql target:sql.")) {
-            val target = if (dialect != null) {
-                Prql.getTarget(dialect)
-            } else {
-                val defaultDialect = SqlDialectMappings.getMapping(project, null)
-                Prql.getTarget(defaultDialect.id)
-            }
-            if (target != null) {
-                prqlNewCode = "prql target:sql.${target}\n" + prqlCode
-            }
-        }
-        return PrqlCompiler.toSql(prqlNewCode)
+        val prqlDialect = if (dialect != null) {
+            Prql.getTarget(dialect)
+        } else {
+            val defaultDialect = SqlDialectMappings.getMapping(project, null)
+            Prql.getTarget(defaultDialect.id)
+        } ?: "generic"
+        return PrqlCompiler.toSql(prqlCode, prqlDialect, true, false)
     }
 
     fun isPrqlFromElement(psiElement: PsiElement): Boolean {
