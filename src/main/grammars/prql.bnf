@@ -49,7 +49,7 @@
               OR_LITERAL  =  'or'
               IN     =  'in'
               SWITCH     =  'switch'
-              PARAM = 'regexp:(\$\d+)'
+              PARAM = 'regexp:\$(\d+|[a-zA-Z0-9][_a-zA-Z0-9]*)'
               IDENTIFIER = 'regexp:[a-zA-Z0-9][_a-zA-Z0-9]*'
               COMMENT = 'regexp:("#")[^\n]*'
               INTEGER_LITERAL = 'regexp:\d+'
