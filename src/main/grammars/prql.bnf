@@ -49,6 +49,7 @@
               OR_LITERAL  =  'or'
               IN     =  'in'
               SWITCH     =  'switch'
+              CASE       =  'case'
               PARAM = 'regexp:\$(\d+|[a-zA-Z0-9][_a-zA-Z0-9]*)'
               IDENTIFIER = 'regexp:[a-zA-Z0-9][_a-zA-Z0-9]*'
               COMMENT = 'regexp:("#")[^\n]*'
@@ -87,7 +88,7 @@ positive_range ::= INTEGER_LITERAL DOTDOT INTEGER_LITERAL
 date_time_literal ::= DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL | INTERVAL_LITERAL
 func_call ::= LPAREN func_name (OR | func_param | expr_literal )* RPAREN
 between_expr ::= LPAREN column_name OR IN range RPAREN
-switch_expr ::= SWITCH LBRACK NEW_LINE* switch_arm (NEW_LINE* switch_arm)* (NEW_LINE* switch_default)? NEW_LINE* RBRACK
+switch_expr ::= (SWITCH|CASE) LBRACK NEW_LINE* switch_arm (NEW_LINE* switch_arm)* (NEW_LINE* switch_default)? NEW_LINE* RBRACK
 switch_arm ::= IDENTIFIER switch_arm_compare_operation (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) ARROW (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) COMMA
 switch_arm_compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
 switch_default ::= BOOL_TRUE ARROW (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) COMMA

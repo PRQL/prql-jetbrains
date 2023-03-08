@@ -107,6 +107,7 @@ INDENTED_STRING_QUOTE = (''')[^''']*(''')
   "or"                           { return OR_LITERAL; }
   "in"                           { return IN; }
   "switch"                          { return SWITCH; }
+  "case"                          { return CASE; }
 
 
   /* LITERALS */
