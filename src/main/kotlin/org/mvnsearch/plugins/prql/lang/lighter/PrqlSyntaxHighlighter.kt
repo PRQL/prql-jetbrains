@@ -15,7 +15,11 @@ class PrqlSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
         val textAttributesKey = when (tokenType) {
-            PrqlTypes.RESERVED_KEYWORD -> SqlColors.SQL_KEYWORD
+            PrqlTypes.RESERVED_KEYWORD,
+            PrqlTypes.SWITCH,
+            PrqlTypes.CASE,
+            -> SqlColors.SQL_KEYWORD
+
             PrqlTypes.FUNC_NAME -> SqlColors.SQL_PROCEDURE
             PrqlTypes.RAW_LITERAL, PrqlTypes.COLUMN_NAME -> SqlColors.SQL_COLUMN
             PrqlTypes.TABLE_NAME -> SqlColors.SQL_TABLE
@@ -23,6 +27,7 @@ class PrqlSyntaxHighlighter : SyntaxHighlighterBase() {
             PrqlTypes.STRING_LITERAL,
             PrqlTypes.CHAR_LITERAL,
             PrqlTypes.INDENTED_STRING -> SqlColors.SQL_STRING
+
             PrqlTypes.DOUBLE_LITERAL, PrqlTypes.INTEGER_LITERAL -> SqlColors.SQL_NUMBER
             PrqlTypes.COMMA -> SqlColors.SQL_COMMA
             PrqlTypes.LBRACE, PrqlTypes.RBRACE -> SqlColors.SQL_BRACES
@@ -34,10 +39,12 @@ class PrqlSyntaxHighlighter : SyntaxHighlighterBase() {
             PrqlTypes.DATE_LITERAL,
             PrqlTypes.TIME_LITERAL,
             PrqlTypes.TIMESTAMP_LITERAL,
-            PrqlTypes.INTERVAL_LITERAL-> SqlColors.SQL_VARIABLE
+            PrqlTypes.INTERVAL_LITERAL -> SqlColors.SQL_VARIABLE
+
             PrqlTypes.NULL,
             PrqlTypes.BOOL_FALSE,
             PrqlTypes.BOOL_TRUE -> SqlColors.SQL_SYNTHETIC_ENTITY
+
             PrqlTypes.AGGREGATE_FUNCTION -> SqlColors.SQL_PROCEDURE
             else -> {
                 null
