@@ -39,6 +39,7 @@ class DatabaseNameCompletionContributor : CompletionContributor() {
                             result.addElement(LookupElementBuilder.create("snowflake").withIcon(AllIcons.Providers.Snowflake))
                         } else if (it.text.contains("target:")) {
                             result.addElement(LookupElementBuilder.create("sql.ansi").withPresentableText("ansi").withIcon(DatabaseIcons.Dbms))
+                            result.addElement(LookupElementBuilder.create("sql.any").withPresentableText("any").withIcon(DatabaseIcons.Dbms))
                             result.addElement(LookupElementBuilder.create("sql.bigquery").withPresentableText("bigquery").withIcon(AllIcons.Providers.BigQuery))
                             result.addElement(LookupElementBuilder.create("sql.clickhouse").withPresentableText("clickhouse").withIcon(AllIcons.Providers.ClickHouse))
                             result.addElement(LookupElementBuilder.create("sql.generic").withPresentableText("generic").withIcon(DatabaseIcons.Dbms))
