@@ -18,6 +18,7 @@ class PrqlSyntaxHighlighter : SyntaxHighlighterBase() {
             PrqlTypes.RESERVED_KEYWORD,
             PrqlTypes.SWITCH,
             PrqlTypes.CASE,
+            PrqlTypes.LOOP,
             -> SqlColors.SQL_KEYWORD
 
             PrqlTypes.FUNC_NAME -> SqlColors.SQL_PROCEDURE
