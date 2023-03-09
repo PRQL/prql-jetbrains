@@ -4,11 +4,14 @@
 
 ## [Unreleased]
 
-## [0.5.4]
+## [0.6.0]
 
 ### Added
 
-- Dictionary added for PRQL related words
+- case instead of switch
+- loop support
+- some bugs fixed
+- prql-lib bundled: `prqlc` command line tool is not required anymore
 
 ## [0.5.3]
 
