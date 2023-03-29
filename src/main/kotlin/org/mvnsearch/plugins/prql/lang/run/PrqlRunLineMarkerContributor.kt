@@ -10,6 +10,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.psi.PsiElement
 import com.intellij.util.ObjectUtils
+import org.mvnsearch.plugins.prql.Prql
 import javax.swing.Icon
 
 @Suppress("DialogTitleCapitalization")
@@ -39,7 +40,7 @@ class PrqlRunLineMarkerContributor : PrqlBaseLienMarkerContributor() {
                             raiseError(psiElement.project, "Failed to find active JDBC Console", "Please setup database and open a JDBC Console first")
                         } else {
                             val jdbcConsole = ObjectUtils.tryCast(consoles[0], JdbcConsole::class.java)!!
-                            val sqlOrError = transformPrql(jdbcConsole.dataSource.defaultDialect, text + "\n", elt.project).trim()
+                            val sqlOrError = Prql.transformPrql(jdbcConsole.dataSource.defaultDialect, text + "\n", true, elt.project).trim()
                             if (sqlOrError.startsWith("ERROR:") || sqlOrError.startsWith("Error:")) {
                                 raiseError(psiElement.project, "Failed to generate SQL!", sqlOrError)
                             } else {   // compiled successfully

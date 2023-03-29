@@ -14,25 +14,6 @@ import org.prql.prql4j.PrqlCompiler
 
 open class PrqlBaseLienMarkerContributor : RunLineMarkerProvider() {
 
-    @Throws(Exception::class)
-    fun transformPrql(dialect: String?, prqlCode: String, project: Project): String {
-        val prqlTarget = if (dialect != null) {
-            Prql.getTarget(dialect)
-        } else {
-            val defaultDialect = SqlDialectMappings.getMapping(project, null)
-            Prql.getTarget(defaultDialect.id)
-        } ?: "generic"
-        val sql = if (prqlCode.contains(" ?")) {
-            PrqlCompiler.toSql(prqlCode.replace(" ?", "$0"), "sql.${prqlTarget}", true, false)
-        } else {
-            PrqlCompiler.toSql(prqlCode, "sql.${prqlTarget}", true, false)
-        }
-        return if (sql.contains(" $0")) {
-            sql.replace(" $0", " ?")
-        } else {
-            sql
-        }
-    }
 
     fun isPrqlFromElement(psiElement: PsiElement): Boolean {
         val elementType = psiElement.elementType
