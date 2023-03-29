@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.6.1]
+
+### Added
+
+- Inspection: sync transpiled SQL from PRQL to @Query
+
 ## [0.6.0]
 
 ### Added
