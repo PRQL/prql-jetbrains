@@ -95,6 +95,7 @@ INDENTED_STRING_QUOTE = (''')[^''']*(''')
   "@"                             { return AT; }
   "$"                             { return DOLLAR; }
   "??"                            { return COALESCE; }
+  "?"                             { return QUESTION; }
   "null"                          { return NULL; }
 
   "prql"|"func"|"table" | "let" |"aggregate"|"derive"|"filter"|"from" | "from_text" | "group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append"
