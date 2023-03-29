@@ -22,7 +22,16 @@ open class PrqlBaseLienMarkerContributor : RunLineMarkerProvider() {
             val defaultDialect = SqlDialectMappings.getMapping(project, null)
             Prql.getTarget(defaultDialect.id)
         } ?: "generic"
-        return PrqlCompiler.toSql(prqlCode, "sql.${prqlTarget}", true, false)
+        val sql = if (prqlCode.contains(" ?")) {
+            PrqlCompiler.toSql(prqlCode.replace(" ?", "$0"), "sql.${prqlTarget}", true, false)
+        } else {
+            PrqlCompiler.toSql(prqlCode, "sql.${prqlTarget}", true, false)
+        }
+        return if (sql.contains(" $0")) {
+            sql.replace(" $0", " ?")
+        } else {
+            sql
+        }
     }
 
     fun isPrqlFromElement(psiElement: PsiElement): Boolean {
