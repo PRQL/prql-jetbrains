@@ -2,5 +2,11 @@
     <depends>com.intellij.java</depends>
     <extensions defaultExtensionNs="com.intellij">
         <multiHostInjector implementation="org.mvnsearch.plugins.prql.lang.injector.PrqlAnnotationSQLLanguageInjector"/>
+        <localInspection language="JAVA"
+                         displayName="Inspection for @PRQL and @Query"
+                         groupName="PRQL"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="org.mvnsearch.plugins.prql.lang.inspection.SyncPRQL2SQLInspection"/>
     </extensions>
 </idea-plugin>
