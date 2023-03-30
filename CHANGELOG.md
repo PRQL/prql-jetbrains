@@ -8,7 +8,7 @@
 
 ### Added
 
-- Inspection: sync transpiled SQL from PRQL to @Query
+- Inspection: sync transpiled SQL from PRQL to `@Query`
 
 ## [0.6.0]
 
