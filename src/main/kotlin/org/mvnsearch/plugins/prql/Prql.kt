@@ -26,10 +26,15 @@ object Prql {
             val defaultDialect = SqlDialectMappings.getMapping(project, null)
             dialectMapping[defaultDialect.id]
         } ?: "generic"
-        val sql = if (prqlCode.contains(" ?")) {
+        var sql = if (prqlCode.contains(" ?")) {
             PrqlCompiler.toSql(prqlCode.replace(" ?", "$0"), "sql.${prqlTarget}", format, false)
         } else {
             PrqlCompiler.toSql(prqlCode, "sql.${prqlTarget}", format, false)
+        }
+        sql = if(sql.contains("$ ")) {
+            sql.replace(" $ ", " $")
+        } else {
+            sql
         }
         return if (sql.contains(" $0")) {
             sql.replace(" $0", " ?")
