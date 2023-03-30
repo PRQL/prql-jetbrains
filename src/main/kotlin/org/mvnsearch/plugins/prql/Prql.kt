@@ -20,26 +20,41 @@ object Prql {
 
     @Throws(Exception::class)
     fun transformPrql(dialect: String?, prqlCode: String, format: Boolean, project: Project): String {
-        val prqlTarget = if (dialect != null) {
-            dialectMapping[dialect]
-        } else {
-            val defaultDialect = SqlDialectMappings.getMapping(project, null)
-            dialectMapping[defaultDialect.id]
-        } ?: "generic"
+        val prqlTarget = getPrqlDatabaseTarget(dialect, project)
         var sql = if (prqlCode.contains(" ?")) {
             PrqlCompiler.toSql(prqlCode.replace(" ?", "$0"), "sql.${prqlTarget}", format, false)
         } else {
             PrqlCompiler.toSql(prqlCode, "sql.${prqlTarget}", format, false)
         }
-        sql = if(sql.contains("$ ")) {
-            sql.replace(" $ ", " $")
-        } else {
-            sql
+        if (sql.contains(" $ ")) {
+            sql = sql.replace(" $ ", " $")
         }
-        return if (sql.contains(" $0")) {
-            sql.replace(" $0", " ?")
+        return sql
+    }
+
+    @Throws(Exception::class)
+    fun transformPrqlWithJdbc(dialect: String?, prqlCode: String, format: Boolean, project: Project): String {
+        val prqlTarget = getPrqlDatabaseTarget(dialect, project)
+        var sql = if (prqlCode.contains(" ?")) {
+            PrqlCompiler.toSql(prqlCode.replace(" ?", "$0"), "sql.${prqlTarget}", format, false)
         } else {
-            sql
+            PrqlCompiler.toSql(prqlCode, "sql.${prqlTarget}", format, false)
         }
+        if (sql.contains(" $0")) {
+            sql = sql.replace(" $0", " ?")
+        }
+        if (sql.contains(" $")) {
+            sql = sql.replace(" $", " :")
+        }
+        return sql
+    }
+
+    private fun getPrqlDatabaseTarget(dialect: String?, project: Project): String {
+        return if (dialect != null) {
+            dialectMapping[dialect]
+        } else {
+            val defaultDialect = SqlDialectMappings.getMapping(project, null)
+            dialectMapping[defaultDialect.id]
+        } ?: "generic"
     }
 }
