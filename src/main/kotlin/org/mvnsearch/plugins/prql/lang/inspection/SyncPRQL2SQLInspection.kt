@@ -50,7 +50,7 @@ class SyncPRQL2SQLInspection : AbstractBaseJavaLocalInspectionTool() {
 
 class SyncPRQL2SQLQuickFix : LocalQuickFix {
     override fun getFamilyName(): String {
-        return "Sync PRQL to SQL"
+        return "Sync transpiled SQL from @PRQL to @Query"
     }
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
