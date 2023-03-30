@@ -9,6 +9,7 @@
 ### Added
 
 - Inspection: sync transpiled SQL from PRQL to `@Query`
+- Updated to PRQL 0.6.1
 
 ## [0.6.0]
 
