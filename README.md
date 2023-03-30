@@ -14,6 +14,7 @@ Features:
 - SQL transpile support
 - SQL Target dialect support from `SQL dialects`
 - Execute PRQL by JDBC Console
+- Sync transpiled SQL from `@PRQL` to `@Query`
 
 <!-- Plugin description end -->
 
