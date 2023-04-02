@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.7.0]
+
+### Added
+
+- Updated to PRQL 0.7.0
+
 ## [0.6.1]
 
 ### Added
