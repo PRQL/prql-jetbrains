@@ -23,6 +23,14 @@ class PrqlAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         when (element.elementType) {
 
+            PrqlTypes.PARAM2 -> {
+                holder.newSilentAnnotation(HighlightSeverity.WEAK_WARNING)
+                    .range(element.textRange)
+                    .textAttributes(SqlColors.SQL_PARAMETER)
+                    .tooltip("Not supported officially, only for JetBrains plugin")
+                    .create()
+            }
+
             PrqlTypes.F_STRING -> {
                 highLightFString(element, holder)
             }
