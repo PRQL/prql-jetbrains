@@ -9,6 +9,7 @@
 ### Added
 
 - Updated to PRQL 0.7.0
+- Add `?`, `:name` variable support for Java JDBC only
 
 ## [0.6.1]
 
