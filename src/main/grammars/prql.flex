@@ -56,7 +56,7 @@ DOUBLE_LITERAL=([\d][\d_]*)(\.)([\d][\d_]*)
 
 DATE_LITERAL = ("@")(\d{4})-(\d{2})-(\d{2})
 TIME_LITERAL = ("@")(\d{2}):(\d{2})(:\d{2})?
-TIMESTAMP_LITERAL = ("@")(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-][\d]+(:\d+)?)?
+TIMESTAMP_LITERAL = ("@")(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+)?([+-][\d]+(:\d+)?)?
 INTERVAL_LITERAL = (\d+)(seconds|minutes|hours|days|months|years)
 RAW_LITERAL   = (\`[^\\\`\r\n]*\`)
 CHAR_LITERAL   = (\'[^\\\'\r\n]*\')

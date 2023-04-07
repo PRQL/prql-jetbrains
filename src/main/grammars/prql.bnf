@@ -73,7 +73,7 @@
               //time related
               DATE_LITERAL = 'regexp:("@")(\d{4})-(\d{2})-(\d{2})'
               TIME_LITERAL = 'regexp:("@")(\d{2}):(\d{2})(:\d{2})'
-              TIMESTAMP_LITERAL = 'regexp:("@")(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})([+-]\d+(:\d+)?)?'
+              TIMESTAMP_LITERAL = 'regexp:("@")(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+)?([+-]\d+(:\d+)?)?'
               INTERVAL_LITERAL = 'regexp:(\d+)(seconds|minutes|hours|days|months|years)'
           ]
 }
