@@ -36,10 +36,18 @@ object Prql {
     fun transformPrqlWithJdbc(dialect: String?, prqlCode: String, format: Boolean, project: Project): String {
         val prqlTarget = getPrqlDatabaseTarget(dialect, project)
         val prqlSQLTarget = "sql.${prqlTarget}"
+        var cleanPrqlCode = prqlCode
+        if (cleanPrqlCode.contains(" ?")) {
+            cleanPrqlCode = cleanPrqlCode.replace(" ?", "$0")
+        } else if(prqlCode.contains(" :")) {
+            cleanPrqlCode = prqlCode.replace(":(\\w+)\\b".toRegex(), "\\$$1")
+        } else if(prqlCode.contains("\\{")) {
+            cleanPrqlCode = prqlCode.replace("\\\\\\{(\\w+)}".toRegex(), "\\$$1")
+        }
         var sql = if (prqlCode.contains(" ?")) { //jdbc ? placeholder
-            PrqlCompiler.toSql(prqlCode.replace(" ?", "$0"), prqlSQLTarget, format, false)
+            PrqlCompiler.toSql(cleanPrqlCode, prqlSQLTarget, format, false)
         } else if (prqlCode.contains(" :")) { //spring named placeholder: :name
-            PrqlCompiler.toSql(prqlCode.replace(":(\\w+)\\b".toRegex(), "\\$$1"), prqlSQLTarget, format, false)
+            PrqlCompiler.toSql(cleanPrqlCode, prqlSQLTarget, format, false)
         } else {
             PrqlCompiler.toSql(prqlCode, prqlSQLTarget, format, false)
         }
