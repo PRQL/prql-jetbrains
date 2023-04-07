@@ -23,7 +23,8 @@ class PrqlAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         when (element.elementType) {
 
-            PrqlTypes.PARAM2 -> {
+            PrqlTypes.PARAM2,
+            PrqlTypes.PARAM3 -> {
                 holder.newSilentAnnotation(HighlightSeverity.WEAK_WARNING)
                     .range(element.textRange)
                     .textAttributes(SqlColors.SQL_PARAMETER)
