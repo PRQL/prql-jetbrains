@@ -40,6 +40,7 @@ WHITE_SPACE      = {WHITE_SPACE_CHAR}+
 IDENTIFIER = [_\p{xidstart}][\p{xidcontinue}]*
 PARAM = \$\d+
 PARAM2 = [\:\$][\p{xidstart}][\p{xidcontinue}]*
+PARAM3 = \\\{[\p{xidstart}][\p{xidcontinue}]*\}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // comment
@@ -135,6 +136,7 @@ INDENTED_STRING_QUOTE = (''')[^''']*(''')
   {RAW_LITERAL}                { return RAW_LITERAL; }
 
   {COMMENT}                      { return COMMENT; }
+  {PARAM3}                        { return PARAM3; }
   {PARAM2}                        { return PARAM2; }
   {PARAM}                        { return PARAM; }
   {IDENTIFIER}                   { return IDENTIFIER; }
