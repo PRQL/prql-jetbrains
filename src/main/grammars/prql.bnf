@@ -32,6 +32,8 @@
               DIV         =  '/'
               REM         =  '%'
               OR          =  '|'
+              D_OR        =  '||'
+              D_AND       =  '&&'
               LT          =  '<'
               LT_EQ       =  '<='
               GT          =  '>'
@@ -106,8 +108,11 @@ column_variant ::= ( (table_alias DOT column_name) | column_name | RAW_LITERAL )
 column_alias ::= IDENTIFIER
 table_name ::= IDENTIFIER
 table_alias ::= IDENTIFIER
-table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name) | table_name | RAW_LITERAL | table_from_sql )
+table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name) | table_name | RAW_LITERAL | table_from_sql | table_from_function )
 table_from_sql ::=  S_STRING {pin=1 implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableFromSQLInjectionHost"}
+table_from_function ::=  LPAREN table_from_function_name table_from_function_file  RPAREN
+table_from_function_name ::=  'read_parquet' | 'read_csv'
+table_from_function_file ::= CHAR_LITERAL
 func_name ::= IDENTIFIER
 func_param ::= IDENTIFIER (COLON func_param_value)?
 func_param_value ::= INTEGER_LITERAL | DOUBLE_LITERAL | STRING_LITERAL | DATE_LITERAL |TIME_LITERAL| TIMESTAMP_LITERAL
@@ -143,7 +148,7 @@ stmt_concat ::= 'concat' table_variant {pin=1}
 // take statement
 stmt_take ::= 'take' ( positive_range | INTEGER_LITERAL ) {pin=1}
 // filter statement
-stmt_filter ::= 'filter' (bool_expr) ( (AND_LITERAL | OR_LITERAL) bool_expr)* {pin=1}
+stmt_filter ::= 'filter' (bool_expr) ( (AND_LITERAL | D_AND | OR_LITERAL | D_OR ) bool_expr)* {pin=1}
 // derive statement
 stmt_derive ::= 'derive'  (stmt_derive_pairs | stmt_derive_pair)  {pin=1}
 stmt_derive_pair ::= (column_name EQ)? expr

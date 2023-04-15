@@ -87,6 +87,8 @@ INDENTED_STRING_QUOTE = (''')[^''']*(''')
   "*"                             { return MUL; }
   "/"                             { return DIV; }
   "%"                             { return REM; }
+  "||"                             { return D_OR; }
+  "&&"                             { return D_AND; }
   "|"                             { return OR; }
   "<"                             { return LT; }
   "<="                            { return LT_EQ; }
