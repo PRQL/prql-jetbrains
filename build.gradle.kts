@@ -101,9 +101,6 @@ tasks {
             sourceCompatibility = it
             targetCompatibility = it
         }
-        withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-            kotlinOptions.jvmTarget = it
-        }
     }
 
     wrapper {
