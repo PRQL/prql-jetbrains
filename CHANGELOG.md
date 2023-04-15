@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 
+## [0.8.0]
+
+### Added
+
+- Infix `&&`, `||` operator support
+- New functions `read_parquet` and `read_csv`
+
+```
+from (read_parquet 'artists.parquet')
+join (read_csv 'albums.csv') [==track_id]
+```
+
 ## [0.7.0]
 
 ### Added
