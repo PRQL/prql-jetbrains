@@ -63,7 +63,7 @@ RAW_LITERAL   = (\`[^\\\`\r\n]*\`)
 CHAR_LITERAL   = (\'[^\\\'\r\n]*\')
 STRING_LITERAL = (\"[^\\\"\r\n]*\")
 THREE_QUO = (\"\"\")
-INDENTED_STRING = {THREE_QUO} ([\"]{0,2}([^\"]))*{THREE_QUO}
+INDENTED_STRING = {THREE_QUO}([\"]{0,2}([^\"]))*{THREE_QUO}
 INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
 
 
