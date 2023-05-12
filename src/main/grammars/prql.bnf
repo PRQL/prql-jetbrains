@@ -42,6 +42,7 @@
               DOTDOT      =  '..'
               ARROW       =  '->'
               EQARROW       =  '->'
+              MATCH       =  '~='
               AT          =  '@'
               DOLLAR      =  '$'
               COALESCE    =  '??'
@@ -88,7 +89,7 @@ private recover ::= !(any)
 private any ::= !<<eof>> (stmt | NEW_LINE | COMMENT | OR) {pin=1 recoverWhile=recover}
 
 arithmetic_operation ::= (PLUS | MINUS | MUL | DIV | REM | COALESCE | LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
-compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ | AND_LITERAL | OR_LITERAL | LPAREN | RPAREN)
+compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ  | MATCH | AND_LITERAL | OR_LITERAL | LPAREN | RPAREN)
 range ::= range_item DOTDOT range_item?
 range_item ::= (MINUS? INTEGER_LITERAL) | DOUBLE_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
 positive_range ::= INTEGER_LITERAL DOTDOT INTEGER_LITERAL

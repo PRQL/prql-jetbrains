@@ -97,6 +97,7 @@ INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
   ">="                            { return GT_EQ; }
   "->"                            { return ARROW; }
   "=>"                            { return EQARROW; }
+  "~="                            { return MATCH; }
   "@"                             { return AT; }
   "$"                             { return DOLLAR; }
   "??"                            { return COALESCE; }
