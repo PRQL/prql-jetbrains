@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.8.2]
+
+### Added
+
+- Add `~=` regex search operator
+
 ## [0.8.0]
 
 ### Added
@@ -43,7 +49,8 @@ join (read_csv 'albums.csv') [==track_id]
 
 ### Added
 
-- Introduce prql-java library to call PRQL API instead of using `prqlc` command line, and no need to install `prqlc` anymore.
+- Introduce prql-java library to call PRQL API instead of using `prqlc` command line, and no need to install `prqlc`
+  anymore.
 - Code format support
 - Brace matcher support
 
@@ -93,7 +100,8 @@ join (read_csv 'albums.csv') [==track_id]
 - append support
 - Excluding columns: `select ![title, composer]`
 - Numbers can now contain underscores: `select [ small = 1.000_000_1, big = 5_000_000]`
-- Use `prqlc` instead of `prql-compiler` command line tool: please install it by `cargo install --bins --features=cli prql-compiler`
+- Use `prqlc` instead of `prql-compiler` command line tool: please install it
+  by `cargo install --bins --features=cli prql-compiler`
 
 ### Changed
 
