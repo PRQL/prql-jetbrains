@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    implementation(files("libs/prql-java-0.8.0.jar"))
+    implementation(files("libs/prql-java-0.8.2.jar"))
 }
 
 // Set the JVM language level used to build project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
