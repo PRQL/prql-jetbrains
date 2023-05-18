@@ -26,6 +26,10 @@ object Prql {
         if (cleanPrql.contains(" \$")) {
             cleanPrql = cleanPrql.replace(" \\$([\\w.]+)".toRegex(), " s\"\\\$\$1\"")
         }
+        // convert ${user.name} to s"${{user.name}}"
+        if (cleanPrql.contains(" \${")) {
+            cleanPrql = cleanPrql.replace(" \\$\\{([\\w.]+)}".toRegex(), " s\"\\\${{\$1}}\"")
+        }
         // convert :id to s":id"
         if (cleanPrql.contains(" :")) {
             cleanPrql = cleanPrql.replace(" :([\\w.]+)".toRegex(), " s\":\$1\"")
