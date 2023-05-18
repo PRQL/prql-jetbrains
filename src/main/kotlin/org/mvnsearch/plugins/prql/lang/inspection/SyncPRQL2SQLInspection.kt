@@ -32,7 +32,7 @@ class SyncPRQL2SQLInspection : AbstractBaseJavaLocalInspectionTool() {
                                         prql = prqlValue.text.trim('"')
                                     }
                                     if (prql.isNotEmpty()) {
-                                        val transpiledSQL = Prql.transformPrqlWithJdbc(null, prql, false, prqlAnnotation.project)
+                                        val transpiledSQL = Prql.transformPrql(null, prql, false, prqlAnnotation.project)
                                         if (transpiledSQL != sql) {
                                             holder.registerProblem(prqlAnnotation, "Sync PRQL to SQL", syncPRQL2SQLQuickFix)
                                         }
@@ -62,7 +62,7 @@ class SyncPRQL2SQLQuickFix : LocalQuickFix {
                     prql = prqlValue.text.trim('"')
                 }
                 if (prql.isNotEmpty()) {
-                    val transpiledSQL = Prql.transformPrqlWithJdbc(null, prql, false, project)
+                    val transpiledSQL = Prql.transformPrql(null, prql, false, project)
                     val newAttributeExpression = JavaPsiFacade.getElementFactory(project).createExpressionFromText("\"$transpiledSQL\"", queryAnnotation)
                     queryAnnotation.setDeclaredAttributeValue("value", newAttributeExpression)
                     queryAnnotation.setDeclaredAttributeValue("nativeQuery", JavaPsiFacade.getElementFactory(project).createExpressionFromText("true", queryAnnotation))
