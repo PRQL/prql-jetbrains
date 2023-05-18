@@ -21,41 +21,27 @@ object Prql {
     @Throws(Exception::class)
     fun transformPrql(dialect: String?, prqlCode: String, format: Boolean, project: Project): String {
         val prqlTarget = getPrqlDatabaseTarget(dialect, project)
-        var sql = if (prqlCode.contains(" ?")) {
-            PrqlCompiler.toSql(prqlCode.replace(" ?", "$0"), "sql.${prqlTarget}", format, false)
-        } else {
-            PrqlCompiler.toSql(prqlCode, "sql.${prqlTarget}", format, false)
+        var cleanPrql = prqlCode
+        // convert $id to s"$id"
+        if (cleanPrql.contains(" \$")) {
+            cleanPrql = cleanPrql.replace(" \\$([\\w.]+)".toRegex(), " s\"\\\$\$1\"")
         }
-        if (sql.contains(" $ ")) {
-            sql = sql.replace(" $ ", " $")
+        // convert :id to s":id"
+        if (cleanPrql.contains(" :")) {
+            cleanPrql = cleanPrql.replace(" :([\\w.]+)".toRegex(), " s\":\$1\"")
         }
-        return sql
-    }
-
-    @Throws(Exception::class)
-    fun transformPrqlWithJdbc(dialect: String?, prqlCode: String, format: Boolean, project: Project): String {
-        val prqlTarget = getPrqlDatabaseTarget(dialect, project)
-        val prqlSQLTarget = "sql.${prqlTarget}"
-        var cleanPrqlCode = prqlCode
-        if (cleanPrqlCode.contains(" ?")) {
-            cleanPrqlCode = cleanPrqlCode.replace(" ?", "$0")
-        } else if(prqlCode.contains(" :")) {
-            cleanPrqlCode = prqlCode.replace(":(\\w+)\\b".toRegex(), "\\$$1")
-        } else if(prqlCode.contains("\\{")) {
-            cleanPrqlCode = prqlCode.replace("\\\\\\{(\\w+)}".toRegex(), "\\$$1")
+        // replace ` ?` to ` $0` for jdbc
+        if (cleanPrql.contains(" ?")) {
+            cleanPrql = cleanPrql.replace(" ?", "$0");
         }
-        var sql = if (prqlCode.contains(" ?")) { //jdbc ? placeholder
-            PrqlCompiler.toSql(cleanPrqlCode, prqlSQLTarget, format, false)
-        } else if (prqlCode.contains(" :")) { //spring named placeholder: :name
-            PrqlCompiler.toSql(cleanPrqlCode, prqlSQLTarget, format, false)
-        } else {
-            PrqlCompiler.toSql(prqlCode, prqlSQLTarget, format, false)
-        }
+        var sql = PrqlCompiler.toSql(cleanPrql, "sql.${prqlTarget}", format, false)
+        // convert $0 to ?
         if (sql.contains(" $0")) {
             sql = sql.replace(" $0", " ?")
         }
-        if (sql.contains(" $")) {
-            sql = sql.replace(" $", " :")
+        // clean ` $ ` to ` $`
+        if (sql.contains(" $ ")) {
+            sql = sql.replace(" $ ", " $")
         }
         return sql
     }
