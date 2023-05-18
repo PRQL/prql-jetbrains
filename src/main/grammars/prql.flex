@@ -40,7 +40,7 @@ WHITE_SPACE      = {WHITE_SPACE_CHAR}+
 IDENTIFIER = [_\p{xidstart}][\p{xidcontinue}]*
 PARAM = \$\d+
 PARAM2 = [\:\$][\p{xidstart}][\p{xidcontinue}]*
-PARAM3 = \\\{[\p{xidstart}][\p{xidcontinue}]*\}
+PARAM3 = [\$]\{[\p{xidstart}][\p{xidcontinue}\.]*\}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // comment
