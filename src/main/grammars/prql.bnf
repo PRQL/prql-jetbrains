@@ -149,7 +149,7 @@ stmt_concat ::= 'concat' table_variant {pin=1}
 // take statement
 stmt_take ::= 'take' ( positive_range | INTEGER_LITERAL ) {pin=1}
 // filter statement
-stmt_filter ::= 'filter' (bool_expr) ( (AND_LITERAL | D_AND | OR_LITERAL | D_OR ) bool_expr)* {pin=1}
+stmt_filter ::= 'filter' LPAREN?  (bool_expr) ( (AND_LITERAL | D_AND | OR_LITERAL | D_OR ) bool_expr)* RPAREN? {pin=1}
 // derive statement
 stmt_derive ::= 'derive'  (stmt_derive_pairs | stmt_derive_pair)  {pin=1}
 stmt_derive_pair ::= (column_name EQ)? expr
