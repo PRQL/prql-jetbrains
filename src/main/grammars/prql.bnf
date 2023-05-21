@@ -91,6 +91,7 @@ private any ::= !<<eof>> (stmt | NEW_LINE | COMMENT | OR) {pin=1 recoverWhile=re
 arithmetic_operation ::= (PLUS | MINUS | MUL | DIV | REM | COALESCE | LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
 compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ  | MATCH | AND_LITERAL | OR_LITERAL | LPAREN | RPAREN)
 range ::= range_item DOTDOT range_item?
+param_any ::= PARAM3 | PARAM2 | PARAM  | QUESTION
 range_item ::= (MINUS? INTEGER_LITERAL) | DOUBLE_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
 positive_range ::= INTEGER_LITERAL DOTDOT INTEGER_LITERAL
 date_time_literal ::= DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL | INTERVAL_LITERAL
@@ -100,7 +101,7 @@ switch_expr ::= (SWITCH|CASE) LBRACK NEW_LINE* switch_arm (NEW_LINE* switch_arm)
 switch_arm ::= IDENTIFIER switch_arm_compare_operation (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) EQARROW (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) COMMA
 switch_arm_compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
 switch_default ::= BOOL_TRUE EQARROW (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) COMMA
-expr_literal ::=  F_STRING | S_STRING | STRING_LITERAL | RAW_LITERAL | switch_expr | INTEGER_LITERAL | DOUBLE_LITERAL | PARAM3 | PARAM2 | PARAM  | QUESTION | date_time_literal| range | NULL | column_with_table| AGGREGATE_FUNCTION | IDENTIFIER
+expr_literal ::=  F_STRING | S_STRING | STRING_LITERAL | RAW_LITERAL | switch_expr | INTEGER_LITERAL | DOUBLE_LITERAL | param_any | date_time_literal| range | NULL | column_with_table| AGGREGATE_FUNCTION | IDENTIFIER
 expr ::=  between_expr | func_call | (LPAREN (expr_literal | func_call | arithmetic_operation)* RPAREN)  | ( (expr_literal | func_call | arithmetic_operation)* )
 bool_expr ::= between_expr | ( LPAREN expr_literal compare_operation expr RPAREN ) | ( expr_literal compare_operation expr)
 column_name ::= IDENTIFIER
