@@ -126,7 +126,7 @@ stmt_prql_directive ::= 'prql' prql_header_name COLON prql_header_value {pin=1}
 prql_header_name ::= IDENTIFIER
 prql_header_value ::= (IDENTIFIER (DOT IDENTIFIER)*) | IDENTIFIER | STRING_LITERAL
 // func statement
-stmt_func_def ::= 'func' func_name (stmt_func_def_param)* ARROW stmt_func_body {pin=1}
+stmt_func_def ::= ('func' | 'let' ) func_name (stmt_func_def_param)* ARROW stmt_func_body {pin=1}
 stmt_func_param ::= IDENTIFIER
 stmt_func_body ::= expr
 stmt_func_def_param ::= stmt_func_param (COLON func_param_value)?
@@ -166,7 +166,7 @@ stmt_sort_columns ::= LBRACK (stmt_sort_column) (COMMA stmt_sort_column)* RBRACK
 //select statement
 stmt_select ::= 'select' (stmt_select_pairs | stmt_select_pair )  {pin=1}
 stmt_select_pair ::=  (table_alias DOT '*') | ((column_variant EQ)? expr)
-stmt_select_pairs ::= EXCL? LBRACK NEW_LINE* (stmt_select_pair) (COMMA NEW_LINE* stmt_select_pair)*  NEW_LINE* RBRACK
+stmt_select_pairs ::= EXCL? LBRACE NEW_LINE* (stmt_select_pair) (COMMA NEW_LINE* stmt_select_pair)*  NEW_LINE* RBRACK
 //loop statement
 stmt_loop ::= 'loop' LPAREN stmt_loop_block RPAREN  {pin=1}
 stmt_loop_block ::=  stmt_filter stmt_select
