@@ -166,7 +166,7 @@ stmt_sort_columns ::= LBRACK (stmt_sort_column) (COMMA stmt_sort_column)* RBRACK
 //select statement
 stmt_select ::= 'select' (stmt_select_pairs | stmt_select_pair )  {pin=1}
 stmt_select_pair ::=  (table_alias DOT '*') | ((column_variant EQ)? expr)
-stmt_select_pairs ::= EXCL? LBRACE NEW_LINE* (stmt_select_pair) (COMMA NEW_LINE* stmt_select_pair)*  NEW_LINE* RBRACK
+stmt_select_pairs ::= EXCL? LBRACE NEW_LINE* (stmt_select_pair) (COMMA NEW_LINE* stmt_select_pair)*  NEW_LINE* RBRACE
 //loop statement
 stmt_loop ::= 'loop' LPAREN stmt_loop_block RPAREN  {pin=1}
 stmt_loop_block ::=  stmt_filter stmt_select
