@@ -30,6 +30,21 @@ Features:
   Download the [latest release](https://github.com/linux-china/prql-jetbrains-plugin/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
+# Type System
+
+* primitives: int/float(underscore allowed), bool(true/false). 
+* string: `"hello world"`, `'hello'`, `"""I said "hello world"!"""`,  
+* date and time: `@2022-12-31`, ` @2020-01-01T13:19:55-08:00`, `@16:54:32`
+* range: `50..100`
+* array: `{}`
+* tuple: `()`
+* function: `let add a b -> a+b`
+            
+### String
+
+* F-strings: Build up a new string from a set of columns or values
+* S-strings: Insert SQL statements directly into the query. Use when PRQL doesn’t have an equivalent facility.
+
 # Todo
 
 * Column code completion
