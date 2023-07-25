@@ -104,14 +104,17 @@ switch_default ::= BOOL_TRUE EQARROW (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITE
 expr_literal ::=  F_STRING | S_STRING | STRING_LITERAL | RAW_LITERAL | switch_expr | INTEGER_LITERAL | DOUBLE_LITERAL | BOOL_TRUE | BOOL_FALSE | param_any | date_time_literal| range | NULL | column_with_table| AGGREGATE_FUNCTION | IDENTIFIER
 expr ::=  between_expr | func_call | (LPAREN (expr_literal | func_call | arithmetic_operation)* RPAREN)  | ( (expr_literal | func_call | arithmetic_operation)* )
 bool_expr ::= between_expr | ( LPAREN expr_literal compare_operation expr RPAREN ) | ( expr_literal compare_operation expr)
-column_name ::= IDENTIFIER
+column_name ::= IDENTIFIER | AGGREGATE_FUNCTION
 column_with_table ::= table_alias DOT IDENTIFIER
 column_variant ::= ( (table_alias DOT column_name) | column_name | RAW_LITERAL )
 column_alias ::= IDENTIFIER
 table_name ::= IDENTIFIER
-table_alias ::= IDENTIFIER
-table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name) | table_name | RAW_LITERAL | table_from_sql | table_from_function )
+table_alias ::= IDENTIFIER | 'this' | 'that'
+table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name) | table_name | RAW_LITERAL | table_from_tuple | table_from_sql | table_from_function )
 table_from_sql ::=  S_STRING {pin=1 implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableFromSQLInjectionHost"}
+table_from_tuple ::=  '[' table_from_tuple_array (COMMA table_from_tuple_array)* ']'
+table_from_tuple_array ::=  '{' table_from_tuple_array_item (COMMA table_from_tuple_array_item)* '}'
+table_from_tuple_array_item ::=  column_name EQ (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL|BOOL_TRUE|BOOL_FALSE)
 table_from_function ::=  LPAREN table_from_function_name table_from_function_file  RPAREN
 table_from_function_name ::=  'read_parquet' | 'read_csv'
 table_from_function_file ::= CHAR_LITERAL
@@ -165,7 +168,7 @@ stmt_sort_column ::= (PLUS|MINUS)? (column_name | S_STRING | F_STRING)
 stmt_sort_columns ::= LBRACK (stmt_sort_column) (COMMA stmt_sort_column)* RBRACK
 //select statement
 stmt_select ::= 'select' (stmt_select_pairs | stmt_select_pair )  {pin=1}
-stmt_select_pair ::=  (table_alias DOT '*') | ((column_variant EQ)? expr)
+stmt_select_pair ::=  (table_alias DOT ('*' | column_name) ) | ((column_variant EQ)? expr)
 stmt_select_pairs ::= EXCL? LBRACE NEW_LINE* (stmt_select_pair) (COMMA NEW_LINE* stmt_select_pair)*  NEW_LINE* RBRACE
 //loop statement
 stmt_loop ::= 'loop' LPAREN stmt_loop_block RPAREN  {pin=1}
