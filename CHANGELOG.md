@@ -8,7 +8,7 @@
 
 ### Added
 
-- New array support: `select {first_name, last_name}`
+- New tuple support: `select {first_name, last_name}`
 - New function definition support: `let add = a b -> a + b`
 - `this` and `that` as tale alias support
 - Relation literals create a relation (a "table") as an array of tuples: `from [{a=5, b=false}, {a=6, b=true}]`
