@@ -110,11 +110,11 @@ column_variant ::= ( (table_alias DOT column_name) | column_name | RAW_LITERAL )
 column_alias ::= IDENTIFIER
 table_name ::= IDENTIFIER
 table_alias ::= IDENTIFIER | 'this' | 'that'
-table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name) | table_name | RAW_LITERAL | table_from_tuple | table_from_sql | table_from_function )
+table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name) | table_name | RAW_LITERAL | table_from_array | table_from_sql | table_from_function )
 table_from_sql ::=  S_STRING {pin=1 implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableFromSQLInjectionHost"}
-table_from_tuple ::=  '[' table_from_tuple_array (COMMA table_from_tuple_array)* ']'
-table_from_tuple_array ::=  '{' table_from_tuple_array_item (COMMA table_from_tuple_array_item)* '}'
-table_from_tuple_array_item ::=  column_name EQ (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL|BOOL_TRUE|BOOL_FALSE)
+table_from_array ::=  '[' table_from_array_tuple (COMMA table_from_array_tuple)* ']'
+table_from_array_tuple ::=  '{' table_from_array_tuple_item (COMMA table_from_array_tuple_item)* '}'
+table_from_array_tuple_item ::=  column_name EQ (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL|BOOL_TRUE|BOOL_FALSE)
 table_from_function ::=  LPAREN table_from_function_name table_from_function_file  RPAREN
 table_from_function_name ::=  'read_parquet' | 'read_csv'
 table_from_function_file ::= CHAR_LITERAL
