@@ -29,7 +29,13 @@ class PrqlSyntaxHighlighter : SyntaxHighlighterBase() {
             PrqlTypes.CHAR_LITERAL,
             PrqlTypes.INDENTED_STRING -> SqlColors.SQL_STRING
 
-            PrqlTypes.DOUBLE_LITERAL, PrqlTypes.INTEGER_LITERAL -> SqlColors.SQL_NUMBER
+            PrqlTypes.DOUBLE_LITERAL,
+            PrqlTypes.INTEGER_LITERAL,
+            PrqlTypes.BINARY_NUMERICAL,
+            PrqlTypes.OCTAL_NUMERICAL,
+            PrqlTypes.HEXADECIMAL_NUMERICAL,
+            -> SqlColors.SQL_NUMBER
+
             PrqlTypes.COMMA -> SqlColors.SQL_COMMA
             PrqlTypes.LBRACE, PrqlTypes.RBRACE -> SqlColors.SQL_BRACES
             PrqlTypes.LBRACK, PrqlTypes.RBRACK -> SqlColors.SQL_BRACKETS
