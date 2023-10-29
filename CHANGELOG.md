@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+## [0.10.0]
+
+### Added
+
+* Update to prql 0.10.0
+* Support for hex/Unicode escape sequences in strings
+* Support for binary/octal/hexadecimal numerical 
+
 ## [0.9.5]
 
 ### Added
