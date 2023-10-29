@@ -62,6 +62,9 @@
               IDENTIFIER = 'regexp:[a-zA-Z0-9][_a-zA-Z0-9]*'
               COMMENT = 'regexp:("#")[^\n]*'
               INTEGER_LITERAL = 'regexp:\d+'
+              BINARY_NUMERICAL = 'regexp:0b([01]+)'
+              OCTAL_NUMERICAL = 'regexp:0o([01234567]+)'
+              HEXADECIMAL_NUMERICAL = 'regexp:0x([0123456789abcdefABCDEFG]+)'
               DOUBLE_LITERAL = 'regexp:\d+\.\d+'
               RAW_LITERAL = 'regexp:(`[^`\r\n]* ` )'
               CHAR_LITERAL = "regexp:('[^\\'\r\n]*')"
@@ -88,6 +91,7 @@ PrqlFile ::= any*
 private recover ::= !(any)
 private any ::= !<<eof>> (stmt | NEW_LINE | COMMENT | OR) {pin=1 recoverWhile=recover}
 
+number_literal ::= INTEGER_LITERAL | BINARY_NUMERICAL | OCTAL_NUMERICAL | HEXADECIMAL_NUMERICAL | DOUBLE_LITERAL
 arithmetic_operation ::= (PLUS | MINUS | MUL | DIV | REM | COALESCE | LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
 compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ  | MATCH | AND_LITERAL | OR_LITERAL | LPAREN | RPAREN)
 range ::= range_item DOTDOT range_item?
@@ -98,10 +102,10 @@ date_time_literal ::= DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL | INTERVAL
 func_call ::= LPAREN func_name (OR | func_param | expr_literal )* RPAREN
 between_expr ::= LPAREN column_name OR IN range RPAREN
 switch_expr ::= (SWITCH|CASE) LBRACK NEW_LINE* switch_arm (NEW_LINE* switch_arm)* (NEW_LINE* switch_default)? NEW_LINE* RBRACK
-switch_arm ::= IDENTIFIER switch_arm_compare_operation (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) EQARROW (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) COMMA
+switch_arm ::= IDENTIFIER switch_arm_compare_operation (STRING_LITERAL|number_literal) EQARROW (STRING_LITERAL|number_literal) COMMA
 switch_arm_compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
-switch_default ::= BOOL_TRUE EQARROW (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL) COMMA
-expr_literal ::=  F_STRING | S_STRING | STRING_LITERAL | RAW_LITERAL | switch_expr | INTEGER_LITERAL | DOUBLE_LITERAL | BOOL_TRUE | BOOL_FALSE | param_any | date_time_literal| range | NULL | column_with_table| AGGREGATE_FUNCTION | IDENTIFIER
+switch_default ::= BOOL_TRUE EQARROW (STRING_LITERAL|number_literal) COMMA
+expr_literal ::=  F_STRING | S_STRING | STRING_LITERAL | RAW_LITERAL | switch_expr | number_literal | BOOL_TRUE | BOOL_FALSE | param_any | date_time_literal| range | NULL | column_with_table| AGGREGATE_FUNCTION | IDENTIFIER
 expr ::=  between_expr | func_call | (LPAREN (expr_literal | func_call | arithmetic_operation)* RPAREN)  | ( (expr_literal | func_call | arithmetic_operation)* )
 bool_expr ::= between_expr | ( LPAREN expr_literal compare_operation expr RPAREN ) | ( expr_literal compare_operation expr)
 column_name ::= IDENTIFIER | AGGREGATE_FUNCTION
@@ -114,13 +118,13 @@ table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name
 table_from_sql ::=  S_STRING {pin=1 implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableFromSQLInjectionHost"}
 table_from_array ::=  '[' table_from_array_tuple (COMMA table_from_array_tuple)* ']'
 table_from_array_tuple ::=  '{' table_from_array_tuple_item (COMMA table_from_array_tuple_item)* '}'
-table_from_array_tuple_item ::=  column_name EQ (STRING_LITERAL|INTEGER_LITERAL|DOUBLE_LITERAL|BOOL_TRUE|BOOL_FALSE)
+table_from_array_tuple_item ::=  column_name EQ (STRING_LITERAL|number_literal|BOOL_TRUE|BOOL_FALSE)
 table_from_function ::=  LPAREN table_from_function_name table_from_function_file  RPAREN
 table_from_function_name ::=  'read_parquet' | 'read_csv'
 table_from_function_file ::= CHAR_LITERAL
 func_name ::= IDENTIFIER
 func_param ::= IDENTIFIER (COLON func_param_value)?
-func_param_value ::= INTEGER_LITERAL | DOUBLE_LITERAL | STRING_LITERAL | DATE_LITERAL |TIME_LITERAL| TIMESTAMP_LITERAL
+func_param_value ::= number_literal | STRING_LITERAL | DATE_LITERAL |TIME_LITERAL| TIMESTAMP_LITERAL
 stmt ::= stmt_prql_directive | stmt_def | stmt_pipe_line
 stmt_def ::= stmt_func_def | stmt_table_def
 stmt_pipe_line ::= stmt_from | stmt_from_text | stmt_loop | stmt_union | stmt_append | stmt_concat| stmt_func_def | stmt_table_def | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window  | stmt_group

@@ -53,6 +53,9 @@ COMMENT=("#")[^\n]*
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 INTEGER_LITERAL=[\d][\d_]*
+BINARY_NUMERICAL=0b([01]+)
+OCTAL_NUMERICAL=0o([01234567]+)
+HEXADECIMAL_NUMERICAL=0x([0123456789abcdefABCDEFG]+)
 DOUBLE_LITERAL=([\d][\d_]*)(\.)([\d][\d_]*)
 
 DATE_LITERAL = ("@")(\d{4})-(\d{2})-(\d{2})
@@ -61,7 +64,7 @@ TIMESTAMP_LITERAL = ("@")(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+)?
 INTERVAL_LITERAL = (\d+)(seconds|minutes|hours|days|months|years)
 RAW_LITERAL   = (\`[^\\\`\r\n]*\`)
 CHAR_LITERAL   = (\'[^\\\'\r\n]*\')
-STRING_LITERAL = (\"[^\\\"\r\n]*\")
+STRING_LITERAL = (\"[^\"\r\n]*\")
 THREE_QUO = (\"\"\")
 INDENTED_STRING = {THREE_QUO}([\"]{0,2}([^\"]))*{THREE_QUO}
 INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
@@ -122,6 +125,9 @@ INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
   /* LITERALS */
 
   {INTEGER_LITERAL}                   { return INTEGER_LITERAL; }
+  {BINARY_NUMERICAL}                   { return BINARY_NUMERICAL; }
+  {OCTAL_NUMERICAL}                   { return OCTAL_NUMERICAL; }
+  {HEXADECIMAL_NUMERICAL}             { return HEXADECIMAL_NUMERICAL; }
   {DOUBLE_LITERAL}                   { return  DOUBLE_LITERAL; }
 
   "f" {STRING_LITERAL}              { return F_STRING; }
