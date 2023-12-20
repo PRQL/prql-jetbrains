@@ -7,7 +7,7 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.22"
+    id("org.jetbrains.kotlin.jvm") version "1.9.20"
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.16.0"
     // Gradle Changelog Plugin
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    implementation(files("libs/prql-java-0.10.0.jar"))
+    implementation(files("libs/prql-java-0.11.0.jar"))
 }
 
 // Set the JVM language level used to build project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
@@ -41,7 +41,8 @@ kotlin {
 intellij {
     pluginName.set(properties("pluginName"))
     type.set(properties("platformType"))
-    version.set(properties("platformVersion"))
+    //version.set(properties("platformVersion"))
+    localPath.set("/Users/linux_china/Applications/IntelliJ IDEA Ultimate.app/Contents")
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
