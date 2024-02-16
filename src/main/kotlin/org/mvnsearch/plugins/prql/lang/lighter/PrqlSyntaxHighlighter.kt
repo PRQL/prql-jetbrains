@@ -16,6 +16,7 @@ class PrqlSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
         val textAttributesKey = when (tokenType) {
             PrqlTypes.RESERVED_KEYWORD,
+            PrqlTypes.LET,
             PrqlTypes.SWITCH,
             PrqlTypes.CASE,
             PrqlTypes.LOOP,
@@ -41,7 +42,7 @@ class PrqlSyntaxHighlighter : SyntaxHighlighterBase() {
             PrqlTypes.LBRACK, PrqlTypes.RBRACK -> SqlColors.SQL_BRACKETS
             PrqlTypes.LPAREN, PrqlTypes.RPAREN -> SqlColors.SQL_PARENS
             PrqlTypes.DOT -> SqlColors.SQL_DOT
-            PrqlTypes.STMT_FUNC_DEF_PARAM -> SqlColors.SQL_PARAMETER
+            PrqlTypes.FUNCTION_PARAM -> SqlColors.SQL_PARAMETER
             PrqlTypes.PARAM -> SqlColors.SQL_VARIABLE
             PrqlTypes.DATE_LITERAL,
             PrqlTypes.TIME_LITERAL,
