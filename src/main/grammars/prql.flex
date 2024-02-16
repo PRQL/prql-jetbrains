@@ -107,7 +107,7 @@ INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
   "?"                             { return QUESTION; }
   "null"                          { return NULL; }
 
-  "prql"|"func"|"table" | "let" |"aggregate"|"derive"|"filter"|"from" | "from_text" | "group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append" | "this" | "that"
+  "prql"|"func"|"table" | "let" | "into" |"aggregate"|"derive"|"filter"|"from" | "from_text" | "group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append" | "this" | "that"
                                   { return RESERVED_KEYWORD; }
    "min"|"max"|"count"|"average"|"stddev"|"every"|"any"|"sum"|"count_distinct"
                                   { return AGGREGATE_FUNCTION; }
