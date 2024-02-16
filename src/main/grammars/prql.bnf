@@ -130,7 +130,7 @@ table_from_function_file ::= CHAR_LITERAL
 func_name ::= IDENTIFIER
 func_param ::= IDENTIFIER (COLON func_param_value)?
 func_param_value ::= number_literal | STRING_LITERAL | DATE_LITERAL |TIME_LITERAL| TIMESTAMP_LITERAL
-stmt ::= stmt_prql_directive | stmt_def | stmt_pipe_line
+stmt ::= stmt_lutra | stmt_prql_directive | stmt_def | stmt_pipe_line
 stmt_def ::=  stmt_variable_def | stmt_func_def | stmt_table_def
 stmt_pipe_line ::= stmt_from | stmt_into | stmt_from_text | stmt_loop | stmt_union | stmt_append | stmt_concat | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window  | stmt_group
 // prql statement
@@ -203,3 +203,8 @@ stmt_window_block ::= LPAREN NEW_LINE* ( (stmt_derive) | NEW_LINE )* RPAREN
 stmt_group ::= 'group' ( stmt_group_columns  | column_name ) (stmt_group_block)? {pin=1}
 stmt_group_columns ::= LBRACK (column_name) (COMMA column_name)* RBRACK
 stmt_group_block ::= LPAREN NEW_LINE* ( (stmt_aggregate) | (stmt_take) | (stmt_sort) | (stmt_window) | NEW_LINE )* RPAREN
+// lutra statement
+stmt_lutra ::= AT LPAREN stmt_lutra_dialect stmt_lutra_pairs? RPAREN {pin=1}
+stmt_lutra_dialect ::= 'lutra.' IDENTIFIER
+stmt_lutra_pairs ::= LBRACE NEW_LINE* (stmt_lutra_pair) (COMMA NEW_LINE* stmt_lutra_pair)*  NEW_LINE* RBRACE
+stmt_lutra_pair ::= IDENTIFIER EQ STRING_LITERAL
