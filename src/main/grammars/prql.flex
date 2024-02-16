@@ -49,6 +49,17 @@ PARAM3 = [\\\$]\{[\p{xidstart}][\p{xidcontinue}\.]*\}
 COMMENT=("#")[^\n]*
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+// function
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+FUNCTION_NAME = {IDENTIFIER}
+ARROW = "->"
+EQ = "="
+LET = "let"
+FUNCTION_PARAM= {IDENTIFIER}(:\s*)?
+FUNCTION_BODY= [^\n]*
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 // Literals
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -69,8 +80,27 @@ THREE_QUO = (\"\"\")
 INDENTED_STRING = {THREE_QUO}([\"]{0,2}([^\"]))*{THREE_QUO}
 INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
 
+%state  LET_BOCK FUNCTION FUNCTION_BODY_BLOCK
 
 %%
+
+<LET_BOCK> {
+  {WHITE_SPACE}+  {  yybegin(LET_BOCK); return TokenType.WHITE_SPACE; }
+  {FUNCTION_NAME} / ([^\n]*)("->")   { yybegin(FUNCTION); return FUNCTION_NAME; }
+  {IDENTIFIER}         {  yybegin(YYINITIAL); return IDENTIFIER; }
+}
+
+<FUNCTION> {
+  {EQ}         {  yybegin(FUNCTION); return EQ; }
+  {FUNCTION_PARAM}    {  yybegin(FUNCTION); return FUNCTION_PARAM; }
+  {WHITE_SPACE}+  {  yybegin(FUNCTION); return TokenType.WHITE_SPACE; }
+  {ARROW}         {  yybegin(FUNCTION_BODY_BLOCK); return ARROW; }
+}
+
+<FUNCTION_BODY_BLOCK> {
+  {FUNCTION_BODY}         {  yybegin(YYINITIAL); return FUNCTION_BODY; }
+}
+
 <YYINITIAL> {
   "{"                             { return LBRACE; }
   "}"                             { return RBRACE; }
@@ -107,7 +137,7 @@ INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
   "?"                             { return QUESTION; }
   "null"                          { return NULL; }
 
-  "prql"|"func"|"table" | "let" | "into" |"aggregate"|"derive"|"filter"|"from" | "from_text" | "group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append" | "this" | "that"
+  "prql"|"func"|"table" | "into" |"aggregate"|"derive"|"filter"|"from" | "from_text" | "group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append" | "this" | "that"
                                   { return RESERVED_KEYWORD; }
    "min"|"max"|"count"|"average"|"stddev"|"every"|"any"|"sum"|"count_distinct"
                                   { return AGGREGATE_FUNCTION; }
@@ -150,6 +180,8 @@ INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
   {PARAM2}                        { return PARAM2; }
   {PARAM}                        { return PARAM; }
   {IDENTIFIER}                   { return IDENTIFIER; }
+
+  {LET} / ([^\n]*)("=")   { yybegin(LET_BOCK); return LET; }
 
   {WHITE_SPACE}                   { return WHITE_SPACE; }
 }
