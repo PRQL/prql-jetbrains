@@ -11,7 +11,7 @@ object PrqlElementFactory {
 
 
     fun createTableDefSQLCodeBlock(project: Project, codeBlock: String): PrqlStmtTableFromSql {
-        val recipeStatement = createFile(project, "table demo = $codeBlock").firstChild as PrqlStmtTableDef
+        val recipeStatement = createFile(project, "let demo = $codeBlock").firstChild as PrqlStmtTableDef
         return recipeStatement.stmtTableFromSql!!
     }
 
@@ -24,9 +24,9 @@ object PrqlElementFactory {
         return stmtFrom.tableVariant!!.firstChild as PrqlTableFromSql
     }
 
-    fun createTableFromText(project: Project, format:String, codeBlock: String): PrqlStmtFromTextStringArg {
-          val stmtFrom = createFile(project, "from_text format:$format $codeBlock").firstChild as PrqlStmtFrom
-          return stmtFrom.tableVariant!!.lastChild as PrqlStmtFromTextStringArg
-      }
+    fun createTableFromText(project: Project, format: String, codeBlock: String): PrqlStmtFromTextStringArg {
+        val stmtFrom = createFile(project, "from_text format:$format $codeBlock").firstChild as PrqlStmtFrom
+        return stmtFrom.tableVariant!!.lastChild as PrqlStmtFromTextStringArg
+    }
 
 }
