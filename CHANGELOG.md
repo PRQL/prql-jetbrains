@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+## [0.11.3]
+
+### Added
+
+* Update to prql 0.11.3
+* Optimize for let statement
+* Support for Lutra statement 
+
 ## [0.10.0]
 
 ### Added
