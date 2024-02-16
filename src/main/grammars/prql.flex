@@ -177,7 +177,7 @@ INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
 
   {COMMENT}                      { return COMMENT; }
   {PARAM3}                        { return PARAM3; }
-  {PARAM2}                        { return PARAM2; }
+//  {PARAM2}                        { return PARAM2; }
   {PARAM}                        { return PARAM; }
   {IDENTIFIER}                   { return IDENTIFIER; }
 
