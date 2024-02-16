@@ -131,25 +131,27 @@ func_name ::= IDENTIFIER
 func_param ::= IDENTIFIER (COLON func_param_value)?
 func_param_value ::= number_literal | STRING_LITERAL | DATE_LITERAL |TIME_LITERAL| TIMESTAMP_LITERAL
 stmt ::= stmt_prql_directive | stmt_def | stmt_pipe_line
-stmt_def ::= stmt_variable_def | stmt_func_def | stmt_table_def
-stmt_pipe_line ::= stmt_from | stmt_from_text | stmt_loop | stmt_union | stmt_append | stmt_concat | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window  | stmt_group
+stmt_def ::=  stmt_variable_def | stmt_func_def | stmt_table_def
+stmt_pipe_line ::= stmt_from | stmt_into | stmt_from_text | stmt_loop | stmt_union | stmt_append | stmt_concat | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window  | stmt_group
 // prql statement
 stmt_prql_directive ::= 'prql' prql_header_name COLON prql_header_value {pin=1}
 prql_header_name ::= IDENTIFIER
 prql_header_value ::= (IDENTIFIER (DOT IDENTIFIER)*) | IDENTIFIER | STRING_LITERAL
 // variable statement
-stmt_variable_def ::= LET stmt_variable_name EQ stmt_variable_value  {pin=2}
+stmt_variable_def ::= LET stmt_variable_name EQ stmt_variable_value
 stmt_variable_name ::= IDENTIFIER
-stmt_variable_value ::= number_literal | STRING_LITERAL | DATE_LITERAL |TIME_LITERAL| TIMESTAMP_LITERAL
+stmt_variable_value ::= number_literal | STRING_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
 // function statement
-stmt_func_def ::= LET FUNCTION_NAME EQ (FUNCTION_PARAM)* ARROW FUNCTION_BODY {pin=2}
+stmt_func_def ::= LET FUNCTION_NAME EQ (FUNCTION_PARAM)* ARROW FUNCTION_BODY
 // table statement
-stmt_table_def ::= LET table_name EQ ( stmt_table_from_sql | stmt_table_from_pipes ) { pin=2 mixin="org.mvnsearch.plugins.prql.lang.psi.PrqlStmtTableDefElementImpl" implements="org.mvnsearch.plugins.prql.lang.psi.PrqlNamedElement" methods=[getKey getValue getName setName getNameIdentifier getPresentation] }
-stmt_table_from_sql ::= S_INDENTED_STRING {pin=1 implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableDefSQLInjectionHost"}
-stmt_table_from_pipes ::= (LPAREN NEW_LINE* stmt_table_pipes_body NEW_LINE* RPAREN)
+stmt_table_def ::= LET table_name EQ ( stmt_table_from_pipes | stmt_table_from_sql ) { mixin="org.mvnsearch.plugins.prql.lang.psi.PrqlStmtTableDefElementImpl" implements="org.mvnsearch.plugins.prql.lang.psi.PrqlNamedElement" methods=[getKey getValue getName setName getNameIdentifier getPresentation] }
+stmt_table_from_sql ::= S_INDENTED_STRING {implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableDefSQLInjectionHost"}
+stmt_table_from_pipes ::= LPAREN NEW_LINE* stmt_table_pipes_body NEW_LINE* RPAREN
 stmt_table_pipes_body ::=  (stmt_pipe_line | NEW_LINE)*
 // from statement
 stmt_from ::= 'from' table_variant {pin=1}
+// into statement
+stmt_into ::= 'into' table_name {pin=1}
 // from text
 stmt_from_text ::= 'from_text' stmt_from_text_format_arg stmt_from_text_string_arg {pin=1}
 stmt_from_text_format_arg ::= 'format:' ('json' | 'csv')
@@ -171,7 +173,7 @@ stmt_derive_pairs ::= LBRACK NEW_LINE* (stmt_derive_pair) (COMMA NEW_LINE* stmt_
 // aggregate statement
 stmt_aggregate ::= 'aggregate' (stmt_aggregate_pairs) {pin=1}
 stmt_aggregate_pair ::= (column_name EQ)? expr
-stmt_aggregate_pairs ::= LBRACK NEW_LINE* (stmt_aggregate_pair) (COMMA NEW_LINE* stmt_aggregate_pair)*  NEW_LINE* RBRACK
+stmt_aggregate_pairs ::= LBRACE NEW_LINE* (stmt_aggregate_pair) (COMMA NEW_LINE* stmt_aggregate_pair)*  NEW_LINE* RBRACE
 //sort statement
 stmt_sort ::= 'sort' (stmt_sort_columns | column_name ) {pin=1}
 stmt_sort_column ::= (PLUS|MINUS)? (column_name | S_STRING | F_STRING)
