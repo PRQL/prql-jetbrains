@@ -7,9 +7,9 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.9.20"
+    id("org.jetbrains.kotlin.jvm") version "1.9.21"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.16.0"
+    id("org.jetbrains.intellij") version "1.16.1"
     // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "2.2.0"
     // Gradle Qodana Plugin
@@ -17,7 +17,7 @@ plugins {
     // Gradle Kover Plugin
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
     // grammar Plugin
-    id("org.jetbrains.grammarkit") version "2022.3.2"
+    id("org.jetbrains.grammarkit") version "2022.3.2.1"
 }
 
 group = properties("pluginGroup")
@@ -150,12 +150,12 @@ tasks {
         password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
     }
 
-    publishPlugin {
+   /* publishPlugin {
         dependsOn("patchChangelog")
         token.set(System.getenv("PUBLISH_TOKEN"))
         // pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
-    }
+        channels = properties("pluginVersion").map { listOf(it.substringAfter('-').substringBefore('.').ifEmpty { "default" }) }
+    }*/
 }
