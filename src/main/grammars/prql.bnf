@@ -97,13 +97,20 @@ private recover ::= !(any)
 private any ::= !<<eof>> (stmt | NEW_LINE | COMMENT | OR) {pin=1 recoverWhile=recover}
 
 number_literal ::= INTEGER_LITERAL | BINARY_NUMERICAL | OCTAL_NUMERICAL | HEXADECIMAL_NUMERICAL | DOUBLE_LITERAL
+date_time_literal ::= DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL | INTERVAL_LITERAL
+bool_literal ::= BOOL_TRUE|BOOL_FALSE
+tuple_literal ::= LBRACE (tuple_item) (COMMA tuple_item)* RBRACE
+tuple_item ::= (tuple_item_name EQ)? tuple_item_value
+tuple_item_name ::= IDENTIFIER
+tuple_item_value ::= number_literal | STRING_LITERAL | date_time_literal | bool_literal
+array_literal ::= LBRACK array_item (COMMA array_item)* COMMA? RBRACK
+array_item ::= tuple_literal | STRING_LITERAL | date_time_literal | bool_literal | number_literal
 arithmetic_operation ::= (PLUS | MINUS | MUL | DIV | REM | COALESCE | LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
 compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ  | MATCH | AND_LITERAL | OR_LITERAL | LPAREN | RPAREN)
 range ::= range_item DOTDOT range_item?
 param_any ::= PARAM3 | PARAM  | QUESTION
 range_item ::= (MINUS? INTEGER_LITERAL) | DOUBLE_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
 positive_range ::= INTEGER_LITERAL DOTDOT INTEGER_LITERAL
-date_time_literal ::= DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL | INTERVAL_LITERAL
 func_call ::= LPAREN func_name (OR | func_param | expr_literal )* RPAREN
 between_expr ::= LPAREN column_name OR IN range RPAREN
 switch_expr ::= (SWITCH|CASE) LBRACK NEW_LINE* switch_arm (NEW_LINE* switch_arm)* (NEW_LINE* switch_default)? NEW_LINE* RBRACK
@@ -117,8 +124,10 @@ column_name ::= IDENTIFIER | AGGREGATE_FUNCTION
 column_with_table ::= table_alias DOT IDENTIFIER
 column_variant ::= ( (table_alias DOT column_name) | column_name | RAW_LITERAL )
 table_name ::= IDENTIFIER
+table_namespace ::= IDENTIFIER
+table_full_name ::= (table_namespace DOT)* table_name
 table_alias ::= IDENTIFIER | 'this' | 'that'
-table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name) | table_name | RAW_LITERAL | table_from_array | table_from_sql | table_from_function )
+table_variant ::= ( (table_alias EQ table_from_sql) | (table_alias EQ table_name) | table_full_name| table_name | RAW_LITERAL | table_from_array | table_from_sql | table_from_function )
 table_from_sql ::=  S_STRING {pin=1 implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableFromSQLInjectionHost"}
 table_from_array ::=  '[' table_from_array_tuple (COMMA table_from_array_tuple)* ']'
 table_from_array_tuple ::=  '{' table_from_array_tuple_item (COMMA table_from_array_tuple_item)* '}'
@@ -128,9 +137,9 @@ table_from_function_name ::=  'read_parquet' | 'read_csv'
 table_from_function_file ::= CHAR_LITERAL
 func_name ::= IDENTIFIER
 func_param ::= IDENTIFIER (COLON func_param_value)?
-func_param_value ::= number_literal | STRING_LITERAL | DATE_LITERAL |TIME_LITERAL| TIMESTAMP_LITERAL
-stmt ::= stmt_lutra | stmt_prql_directive | stmt_def | stmt_pipe_line
-stmt_def ::=  stmt_variable_def | stmt_func_def | stmt_table_def
+func_param_value ::= number_literal | STRING_LITERAL | DATE_LITERAL | TIME_LITERAL| TIMESTAMP_LITERAL
+stmt ::= stmt_lutra | stmt_prql_directive | stmt_module |  stmt_def | stmt_pipe_line
+stmt_def ::=  stmt_variable_def | stmt_table_def | stmt_func_def
 stmt_pipe_line ::= stmt_from | stmt_into | stmt_from_text | stmt_loop | stmt_union | stmt_append | stmt_concat | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window  | stmt_group
 // prql statement
 stmt_prql_directive ::= 'prql' prql_header_name COLON prql_header_value {pin=1}
@@ -139,14 +148,14 @@ prql_header_value ::= (IDENTIFIER (DOT IDENTIFIER)*) | IDENTIFIER | STRING_LITER
 // variable statement
 stmt_variable_def ::= LET stmt_variable_name EQ stmt_variable_value
 stmt_variable_name ::= IDENTIFIER
-stmt_variable_value ::= number_literal | STRING_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
+stmt_variable_value ::= array_literal | tuple_literal | number_literal | STRING_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
 // function statement
 stmt_func_def ::= LET FUNCTION_NAME EQ (FUNCTION_PARAM)* ARROW FUNCTION_BODY
 // table statement
 stmt_table_def ::= LET table_name EQ ( stmt_table_from_pipes | stmt_table_from_sql ) { mixin="org.mvnsearch.plugins.prql.lang.psi.PrqlStmtTableDefElementImpl" implements="org.mvnsearch.plugins.prql.lang.psi.PrqlNamedElement" methods=[getKey getValue getName setName getNameIdentifier getPresentation] }
 stmt_table_from_sql ::= S_INDENTED_STRING {implements=["com.intellij.psi.PsiLanguageInjectionHost"] mixin="org.mvnsearch.plugins.prql.lang.psi.impl.PrqlTableDefSQLInjectionHost"}
-stmt_table_from_pipes ::= LPAREN NEW_LINE* stmt_table_pipes_body NEW_LINE* RPAREN
-stmt_table_pipes_body ::=  (stmt_pipe_line | NEW_LINE)*
+stmt_table_from_pipes ::= LPAREN stmt_table_pipes_body RPAREN
+stmt_table_pipes_body ::=  (stmt_pipe_line | NEW_LINE | OR )*
 // from statement
 stmt_from ::= 'from' table_variant {pin=1}
 // into statement
@@ -164,15 +173,17 @@ stmt_concat ::= 'concat' table_variant {pin=1}
 // take statement
 stmt_take ::= 'take' ( positive_range | INTEGER_LITERAL ) {pin=1}
 // filter statement
-stmt_filter ::= 'filter' LPAREN?  (bool_expr) ( (AND_LITERAL | D_AND | OR_LITERAL | D_OR ) bool_expr)* RPAREN? {pin=1}
+stmt_filter ::= 'filter' (stmt_filter_pair |stmt_filter_pairs)  {pin=1}
+stmt_filter_pair ::= bool_expr
+stmt_filter_pairs ::= LPAREN bool_expr ( (AND_LITERAL | D_AND | OR_LITERAL | D_OR ) bool_expr)* RPAREN
 // derive statement
 stmt_derive ::= 'derive'  (stmt_derive_pairs | stmt_derive_pair)  {pin=1}
 stmt_derive_pair ::= (column_name EQ)? expr
-stmt_derive_pairs ::= LBRACK NEW_LINE* (stmt_derive_pair) (COMMA NEW_LINE* stmt_derive_pair)*  NEW_LINE* RBRACK
+stmt_derive_pairs ::= LBRACE (stmt_derive_pair) (COMMA stmt_derive_pair)*  RBRACE
 // aggregate statement
 stmt_aggregate ::= 'aggregate' (stmt_aggregate_pairs) {pin=1}
 stmt_aggregate_pair ::= (column_name EQ)? expr
-stmt_aggregate_pairs ::= LBRACE NEW_LINE* (stmt_aggregate_pair) (COMMA NEW_LINE* stmt_aggregate_pair)*  NEW_LINE* RBRACE
+stmt_aggregate_pairs ::= LBRACE (stmt_aggregate_pair) (COMMA stmt_aggregate_pair)* RBRACE
 //sort statement
 stmt_sort ::= 'sort' (stmt_sort_columns | column_name ) {pin=1}
 stmt_sort_column ::= (PLUS|MINUS)? (column_name | S_STRING | F_STRING)
@@ -180,7 +191,7 @@ stmt_sort_columns ::= LBRACK (stmt_sort_column) (COMMA stmt_sort_column)* RBRACK
 //select statement
 stmt_select ::= 'select' (stmt_select_pairs | stmt_select_pair )  {pin=1}
 stmt_select_pair ::=  (table_alias DOT ('*' | column_name) ) | ((column_variant EQ)? expr)
-stmt_select_pairs ::= EXCL? LBRACE NEW_LINE* (stmt_select_pair) (COMMA NEW_LINE* stmt_select_pair)*  NEW_LINE* RBRACE
+stmt_select_pairs ::= EXCL? LBRACE (stmt_select_pair) (COMMA stmt_select_pair)* RBRACE
 //loop statement
 stmt_loop ::= 'loop' LPAREN stmt_loop_block RPAREN  {pin=1}
 stmt_loop_block ::=  stmt_filter stmt_select
@@ -197,11 +208,16 @@ stmt_window_rows_expression ::= 'rows' COLON MINUS? INTEGER_LITERAL? DOTDOT INTE
 stmt_window_expanding_expression ::= 'expanding' COLON BOOL_TRUE
 stmt_window_rolling_expression ::= 'rolling' COLON INTEGER_LITERAL
 stmt_window_range_expression ::= 'range' COLON positive_range
-stmt_window_block ::= LPAREN NEW_LINE* ( (stmt_derive) | NEW_LINE )* RPAREN
+stmt_window_block ::= LPAREN (stmt_derive)* RPAREN
 // group statement
 stmt_group ::= 'group' ( stmt_group_columns  | column_name ) (stmt_group_block)? {pin=1}
 stmt_group_columns ::= LBRACK (column_name) (COMMA column_name)* RBRACK
-stmt_group_block ::= LPAREN NEW_LINE* ( (stmt_aggregate) | (stmt_take) | (stmt_sort) | (stmt_window) | NEW_LINE )* RPAREN
+stmt_group_block ::= LPAREN ( (stmt_aggregate) | (stmt_take) | (stmt_sort) | (stmt_window) )* RPAREN
+// module statement
+stmt_module ::= 'module' stmt_module_name stmt_module_body? {pin=1}
+stmt_module_name ::= IDENTIFIER
+stmt_module_body ::= LBRACE (stmt_module_item)* RBRACE
+stmt_module_item ::= stmt_def | stmt_module | stmt_from
 // lutra statement
 stmt_lutra ::= AT LPAREN stmt_lutra_dialect stmt_lutra_pairs? RPAREN {pin=1}
 stmt_lutra_dialect ::= 'lutra.' IDENTIFIER
