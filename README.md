@@ -32,18 +32,19 @@ Features:
 
 # Type System
 
-* primitives: int/float(underscore allowed), bool(true/false). 
-* string: `"hello world"`, `'hello'`, `"""I said "hello world"!"""`,  
-* date and time: `@2022-12-31`, ` @2020-01-01T13:19:55-08:00`, `@16:54:32`
+* primitives: int, float, bool, text, date, time and timestamp 
+* text: `"hello world"`, `'hello'`, `"""I said "hello world"!"""`,  
+* date/time/timestamp: `@2022-12-31`, ` @2020-01-01T13:19:55-08:00`, `@16:54:32`
 * range: `50..100`
-* array: `{}`
-* tuple: `()`
+* array: `[]`
+* tuple: `{}`
 * function: `let add a b -> a+b`
             
 ### String
 
 * F-strings: Build up a new string from a set of columns or values
 * S-strings: Insert SQL statements directly into the query. Use when PRQL doesn’t have an equivalent facility.
+* R-strings: R-strings handle escape characters without special treatment:
 
 # Todo
 
