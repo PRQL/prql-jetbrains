@@ -205,5 +205,5 @@ stmt_group_block ::= LPAREN NEW_LINE* ( (stmt_aggregate) | (stmt_take) | (stmt_s
 // lutra statement
 stmt_lutra ::= AT LPAREN stmt_lutra_dialect stmt_lutra_pairs? RPAREN {pin=1}
 stmt_lutra_dialect ::= 'lutra.' IDENTIFIER
-stmt_lutra_pairs ::= LBRACE NEW_LINE* (stmt_lutra_pair) (COMMA NEW_LINE* stmt_lutra_pair)*  NEW_LINE* RBRACE
+stmt_lutra_pairs ::= LBRACE (stmt_lutra_pair)* RBRACE
 stmt_lutra_pair ::= IDENTIFIER EQ STRING_LITERAL
