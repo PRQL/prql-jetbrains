@@ -107,6 +107,7 @@ array_literal ::= LBRACK array_item (COMMA array_item)* COMMA? RBRACK
 array_item ::= tuple_literal | STRING_LITERAL | date_time_literal | bool_literal | number_literal
 arithmetic_operation ::= (PLUS | MINUS | MUL | DIV | REM | COALESCE | LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
 compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ  | MATCH | AND_LITERAL | OR_LITERAL | LPAREN | RPAREN)
+math_operation ::= (PLUS | MINUS | MUL | DIV | REM )
 range ::= range_item DOTDOT range_item?
 param_any ::= PARAM3 | PARAM  | QUESTION
 range_item ::= (MINUS? INTEGER_LITERAL) | DOUBLE_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
@@ -119,7 +120,9 @@ switch_arm_compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
 switch_default ::= BOOL_TRUE EQARROW (STRING_LITERAL|number_literal) COMMA
 expr_literal ::=  F_STRING | S_STRING | STRING_LITERAL | RAW_LITERAL | switch_expr | number_literal | BOOL_TRUE | BOOL_FALSE | param_any | date_time_literal| range | NULL | column_with_table| AGGREGATE_FUNCTION | IDENTIFIER
 expr ::=  between_expr | func_call | (LPAREN (expr_literal | func_call | arithmetic_operation)* RPAREN)  | ( (expr_literal | func_call | arithmetic_operation)* )
-bool_expr ::= between_expr | ( LPAREN expr_literal compare_operation expr RPAREN ) | ( expr_literal compare_operation expr)
+// todo Add more complex expression
+math_expr ::=  expr_literal math_operation expr_literal (math_operation expr_literal)*
+bool_expr ::= between_expr | ( LPAREN (math_expr | expr_literal ) compare_operation expr RPAREN ) | ( (math_expr | expr_literal) compare_operation expr)
 column_name ::= IDENTIFIER | AGGREGATE_FUNCTION
 column_with_table ::= table_alias DOT IDENTIFIER
 column_variant ::= ( (table_alias DOT column_name) | column_name | RAW_LITERAL )
@@ -187,7 +190,7 @@ stmt_aggregate_pairs ::= LBRACE (stmt_aggregate_pair) (COMMA stmt_aggregate_pair
 //sort statement
 stmt_sort ::= 'sort' (stmt_sort_columns | column_name ) {pin=1}
 stmt_sort_column ::= (PLUS|MINUS)? (column_name | S_STRING | F_STRING)
-stmt_sort_columns ::= LBRACK (stmt_sort_column) (COMMA stmt_sort_column)* RBRACK
+stmt_sort_columns ::= LBRACE (stmt_sort_column) (COMMA stmt_sort_column)* RBRACE
 //select statement
 stmt_select ::= 'select' (stmt_select_pairs | stmt_select_pair )  {pin=1}
 stmt_select_pair ::=  (table_alias DOT ('*' | column_name) ) | ((column_variant EQ)? expr)
