@@ -139,9 +139,8 @@ INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
 
   "prql"|"module"| "func"|"table" | "into" |"aggregate"|"derive"|"filter"|"from" | "from_text" | "group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append" | "this" | "that"
                                   { return RESERVED_KEYWORD; }
-   "min"|"max"|"count"|"average"|"stddev"|"every"|"any"|"sum"|"count_distinct"
+  "min"|"max"|"count"|"average"|"stddev"|"every"|"any"|"sum"|"count_distinct"
                                   { return AGGREGATE_FUNCTION; }
-
   "true"                  { return BOOL_TRUE; }
   "false"                  { return BOOL_FALSE; }
   "and"                            { return AND_LITERAL; }
