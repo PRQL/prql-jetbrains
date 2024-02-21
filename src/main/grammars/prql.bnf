@@ -120,8 +120,8 @@ switch_arm_compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
 switch_default ::= BOOL_TRUE EQARROW (STRING_LITERAL|number_literal) COMMA
 expr_literal ::=  F_STRING | S_STRING | STRING_LITERAL | RAW_LITERAL | switch_expr | number_literal | BOOL_TRUE | BOOL_FALSE | param_any | date_time_literal| range | NULL | column_with_table| AGGREGATE_FUNCTION | IDENTIFIER
 expr ::=  between_expr | func_call | (LPAREN (expr_literal | func_call | arithmetic_operation)* RPAREN)  | ( (expr_literal | func_call | arithmetic_operation)* )
-// todo Add more complex expression
-math_expr ::=  expr_literal math_operation expr_literal (math_operation expr_literal)*
+math_expr ::=  math_expr_atomic (math_operation (expr_literal | math_expr_atomic) )*
+math_expr_atomic ::= (expr_literal math_operation (expr_literal | math_expr_atomic) ) | (LPAREN expr_literal math_operation (expr_literal | math_expr_atomic) RPAREN)
 bool_expr ::= between_expr | ( LPAREN (math_expr | expr_literal ) compare_operation expr RPAREN ) | ( (math_expr | expr_literal) compare_operation expr)
 column_name ::= IDENTIFIER | AGGREGATE_FUNCTION
 column_with_table ::= table_alias DOT IDENTIFIER
@@ -181,7 +181,7 @@ stmt_filter_pair ::= bool_expr
 stmt_filter_pairs ::= LPAREN bool_expr ( (AND_LITERAL | D_AND | OR_LITERAL | D_OR ) bool_expr)* RPAREN
 // derive statement
 stmt_derive ::= 'derive'  (stmt_derive_pairs | stmt_derive_pair)  {pin=1}
-stmt_derive_pair ::= (column_name EQ)? expr
+stmt_derive_pair ::= (column_name EQ)? (math_expr| expr)
 stmt_derive_pairs ::= LBRACE (stmt_derive_pair) (COMMA stmt_derive_pair)*  RBRACE
 // aggregate statement
 stmt_aggregate ::= 'aggregate' (stmt_aggregate_pairs) {pin=1}
