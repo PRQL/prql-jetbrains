@@ -75,6 +75,7 @@
               INDENTED_STRING = 'regexp:(""")[^(""")]*("""")'
               INDENTED_STRING_QUOTE = "regexp:(''')[^(''')]*(''')"
               S_INDENTED_STRING = 'regexp:s(""")[^(""")]*(""")'
+              RESERVED_TYPE_NAME = 'reserved_type_name'
               RESERVED_KEYWORD = 'reserved_keyword'
               AGGREGATE_FUNCTION = 'aggregate_function'
               IDENTIFIER = 'regexp:[a-zA-Z0-9][_a-zA-Z0-9]*'
@@ -96,6 +97,8 @@ PrqlFile ::= any*
 private recover ::= !(any)
 private any ::= !<<eof>> (stmt | NEW_LINE | COMMENT | OR) {pin=1 recoverWhile=recover}
 
+type_annotation ::= LT type_name GT
+type_name ::= RESERVED_TYPE_NAME | IDENTIFIER
 number_literal ::= INTEGER_LITERAL | BINARY_NUMERICAL | OCTAL_NUMERICAL | HEXADECIMAL_NUMERICAL | DOUBLE_LITERAL
 date_time_literal ::= DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL | INTERVAL_LITERAL
 bool_literal ::= BOOL_TRUE|BOOL_FALSE
@@ -113,6 +116,11 @@ param_any ::= PARAM3 | PARAM  | QUESTION
 range_item ::= (MINUS? INTEGER_LITERAL) | DOUBLE_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
 positive_range ::= INTEGER_LITERAL DOTDOT INTEGER_LITERAL
 func_call ::= LPAREN func_name (OR | func_param | expr_literal )* RPAREN
+//fun_pipe_call ::= IDENTIFIER OR func_name (expr_literal)*
+func_name ::= func_namespace? IDENTIFIER
+func_namespace ::= IDENTIFIER (DOT IDENTIFIER)* DOT
+func_param ::= IDENTIFIER (COLON func_param_value)?
+func_param_value ::= number_literal | STRING_LITERAL | DATE_LITERAL | TIME_LITERAL| TIMESTAMP_LITERAL
 between_expr ::= LPAREN column_name OR IN range RPAREN
 switch_expr ::= (SWITCH|CASE) LBRACK NEW_LINE* switch_arm (NEW_LINE* switch_arm)* (NEW_LINE* switch_default)? NEW_LINE* RBRACK
 switch_arm ::= IDENTIFIER switch_arm_compare_operation (STRING_LITERAL|number_literal) EQARROW (STRING_LITERAL|number_literal) COMMA
@@ -138,9 +146,6 @@ table_from_array_tuple_item ::=  column_name EQ (STRING_LITERAL|number_literal|B
 table_from_function ::=  LPAREN table_from_function_name table_from_function_file  RPAREN
 table_from_function_name ::=  'read_parquet' | 'read_csv'
 table_from_function_file ::= CHAR_LITERAL
-func_name ::= IDENTIFIER
-func_param ::= IDENTIFIER (COLON func_param_value)?
-func_param_value ::= number_literal | STRING_LITERAL | DATE_LITERAL | TIME_LITERAL| TIMESTAMP_LITERAL
 stmt ::= stmt_lutra | stmt_prql_directive | stmt_module |  stmt_def | stmt_pipe_line
 stmt_def ::=  stmt_variable_def | stmt_table_def | stmt_func_def
 stmt_pipe_line ::= stmt_from | stmt_into | stmt_from_text | stmt_loop | stmt_union | stmt_append | stmt_concat | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window  | stmt_group
@@ -149,7 +154,7 @@ stmt_prql_directive ::= 'prql' prql_header_name COLON prql_header_value {pin=1}
 prql_header_name ::= IDENTIFIER
 prql_header_value ::= (IDENTIFIER (DOT IDENTIFIER)*) | IDENTIFIER | STRING_LITERAL
 // variable statement
-stmt_variable_def ::= LET stmt_variable_name EQ stmt_variable_value
+stmt_variable_def ::= LET stmt_variable_name type_annotation? EQ stmt_variable_value
 stmt_variable_name ::= IDENTIFIER
 stmt_variable_value ::= array_literal | tuple_literal | number_literal | STRING_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
 // function statement
