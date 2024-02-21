@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.11.4]
+
+### Fixed
+
+* Fix some lexer and parser issues
+
 ## [0.11.3]
 
 ### Added
