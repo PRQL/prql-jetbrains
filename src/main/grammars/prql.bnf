@@ -97,7 +97,7 @@ private recover ::= !(any)
 private any ::= !<<eof>> (stmt | NEW_LINE | COMMENT | OR) {pin=1 recoverWhile=recover}
 
 type_annotation ::= LT type_name GT
-type_name ::= IDENTIFIER
+type_name ::= IDENTIFIER | NULL
 number_literal ::= INTEGER_LITERAL | BINARY_NUMERICAL | OCTAL_NUMERICAL | HEXADECIMAL_NUMERICAL | DOUBLE_LITERAL
 date_time_literal ::= DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL | INTERVAL_LITERAL
 bool_literal ::= BOOL_TRUE|BOOL_FALSE
@@ -143,7 +143,7 @@ table_from_array_tuple ::=  '{' table_from_array_tuple_item (COMMA table_from_ar
 table_from_array_tuple_item ::=  column_name EQ (STRING_LITERAL|number_literal|BOOL_TRUE|BOOL_FALSE)
 table_from_function ::=  LPAREN func_name table_from_function_file  RPAREN
 table_from_function_file ::= STRING_LITERAL | CHAR_LITERAL
-stmt ::= stmt_lutra | stmt_prql_directive | stmt_module |  stmt_def | stmt_pipe_line
+stmt ::= stmt_lutra | stmt_prql_directive | stmt_type | stmt_module |  stmt_def | stmt_pipe_line
 stmt_def ::=  stmt_variable_def | stmt_table_def | stmt_func_def
 stmt_pipe_line ::= stmt_from | stmt_into | stmt_from_text | stmt_loop | stmt_union | stmt_append | stmt_concat | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window  | stmt_group
 // prql statement
@@ -228,3 +228,11 @@ stmt_lutra ::= AT LPAREN stmt_lutra_dialect stmt_lutra_pairs? RPAREN {pin=1}
 stmt_lutra_dialect ::= 'lutra.' IDENTIFIER
 stmt_lutra_pairs ::= LBRACE (stmt_lutra_pair)* RBRACE
 stmt_lutra_pair ::= IDENTIFIER EQ STRING_LITERAL
+// type statement
+stmt_type ::= 'type' type_name EQ (stmt_type_array_tuple | stmt_type_tuple | stmt_type_primitive ) {pin=1}
+stmt_type_array ::= LBRACK type_name RBRACK
+stmt_type_union ::= LPAREN type_name D_OR type_name  RPAREN
+stmt_type_primitive ::= type_name | stmt_type_array | stmt_type_union
+stmt_type_tuple ::= LBRACE ((stmt_type_tuple_name EQ)? stmt_type_primitive) (COMMA (stmt_type_tuple_name EQ)? stmt_type_primitive)* COMMA? RBRACE
+stmt_type_tuple_name ::= IDENTIFIER
+stmt_type_array_tuple ::= LBRACK stmt_type_tuple RBRACK
