@@ -95,9 +95,17 @@ PrqlFile ::= any*
 
 private recover ::= !(any)
 private any ::= !<<eof>> (stmt | NEW_LINE | COMMENT | OR) {pin=1 recoverWhile=recover}
-
-type_annotation ::= LT type_name GT
+// prql type
 type_name ::= IDENTIFIER | NULL
+type_array ::= LBRACK type_name RBRACK
+type_union ::= LPAREN type_name D_OR type_name  RPAREN
+type_primitive ::= type_name | type_array | type_union
+type_tuple ::= LBRACE ((type_tuple_name EQ)? type_primitive) (COMMA (type_tuple_name EQ)? type_primitive)* COMMA? RBRACE
+type_tuple_name ::= IDENTIFIER
+type_array_tuple ::= LBRACK type_tuple RBRACK
+type_any ::= type_array_tuple | type_tuple | type_primitive
+type_annotation ::= LT type_any GT
+// literal
 number_literal ::= INTEGER_LITERAL | BINARY_NUMERICAL | OCTAL_NUMERICAL | HEXADECIMAL_NUMERICAL | DOUBLE_LITERAL
 date_time_literal ::= DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL | INTERVAL_LITERAL
 bool_literal ::= BOOL_TRUE|BOOL_FALSE
@@ -107,18 +115,23 @@ tuple_item_name ::= IDENTIFIER
 tuple_item_value ::= number_literal | STRING_LITERAL | date_time_literal | bool_literal
 array_literal ::= LBRACK array_item (COMMA array_item)* COMMA? RBRACK
 array_item ::= tuple_literal | STRING_LITERAL | date_time_literal | bool_literal | number_literal
+// math operation
 arithmetic_operation ::= (PLUS | MINUS | MUL | DIV | REM | COALESCE | LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ)
 compare_operation ::= (LT | GT | LT_EQ | GT_EQ | EQEQ | EXCLEQ  | MATCH | AND_LITERAL | OR_LITERAL | LPAREN | RPAREN)
 math_operation ::= (PLUS | MINUS | MUL | DIV | REM )
 range ::= range_item DOTDOT range_item?
+// Parameters, such as $1
 param_any ::= PARAM3 | PARAM  | QUESTION
+// range
 range_item ::= (MINUS? INTEGER_LITERAL) | DOUBLE_LITERAL | DATE_LITERAL | TIME_LITERAL | TIMESTAMP_LITERAL
 positive_range ::= INTEGER_LITERAL DOTDOT INTEGER_LITERAL
+// function
 func_call ::= LPAREN func_name (OR | (func_name | func_param | expr_literal) )* RPAREN
 fun_pipe_call ::= IDENTIFIER OR func_name (expr_literal)*
 func_name ::= (IDENTIFIER DOT)? IDENTIFIER
 func_param ::= IDENTIFIER (COLON func_param_value)?
 func_param_value ::= number_literal | STRING_LITERAL | DATE_LITERAL | TIME_LITERAL| TIMESTAMP_LITERAL
+// expr
 between_expr ::= LPAREN column_name OR IN range RPAREN
 switch_expr ::= (SWITCH|CASE) LBRACK NEW_LINE* switch_arm (NEW_LINE* switch_arm)* (NEW_LINE* switch_default)? NEW_LINE* RBRACK
 switch_arm ::= IDENTIFIER switch_arm_compare_operation (STRING_LITERAL|number_literal) EQARROW (STRING_LITERAL|number_literal) COMMA
@@ -129,9 +142,11 @@ expr ::=  between_expr | func_call | fun_pipe_call | (LPAREN (expr_literal | fun
 math_expr ::=  math_expr_atomic (math_operation (expr_literal | math_expr_atomic) )*
 math_expr_atomic ::= (expr_literal math_operation (expr_literal | math_expr_atomic) ) | (LPAREN expr_literal math_operation (expr_literal | math_expr_atomic) RPAREN)
 bool_expr ::= between_expr | ( LPAREN (math_expr | expr_literal ) compare_operation expr RPAREN ) | ( (math_expr | expr_literal) compare_operation expr)
+// column
 column_name ::= IDENTIFIER | AGGREGATE_FUNCTION
 column_with_table ::= table_alias DOT IDENTIFIER
 column_variant ::= ( (table_alias DOT column_name) | column_name | RAW_LITERAL )
+// table
 table_name ::= IDENTIFIER
 table_namespace ::= IDENTIFIER
 table_full_name ::= (table_namespace DOT)* table_name
@@ -143,6 +158,7 @@ table_from_array_tuple ::=  '{' table_from_array_tuple_item (COMMA table_from_ar
 table_from_array_tuple_item ::=  column_name EQ (STRING_LITERAL|number_literal|BOOL_TRUE|BOOL_FALSE)
 table_from_function ::=  LPAREN func_name table_from_function_file  RPAREN
 table_from_function_file ::= STRING_LITERAL | CHAR_LITERAL
+// statement
 stmt ::= stmt_lutra | stmt_prql_directive | stmt_type | stmt_module |  stmt_def | stmt_pipe_line
 stmt_def ::=  stmt_variable_def | stmt_table_def | stmt_func_def
 stmt_pipe_line ::= stmt_from | stmt_into | stmt_from_text | stmt_loop | stmt_union | stmt_append | stmt_concat | stmt_take | stmt_filter | stmt_derive | stmt_aggregate | stmt_sort | stmt_select | stmt_join | stmt_window  | stmt_group
@@ -229,10 +245,4 @@ stmt_lutra_dialect ::= 'lutra.' IDENTIFIER
 stmt_lutra_pairs ::= LBRACE (stmt_lutra_pair)* RBRACE
 stmt_lutra_pair ::= IDENTIFIER EQ STRING_LITERAL
 // type statement
-stmt_type ::= 'type' type_name EQ (stmt_type_array_tuple | stmt_type_tuple | stmt_type_primitive ) {pin=1}
-stmt_type_array ::= LBRACK type_name RBRACK
-stmt_type_union ::= LPAREN type_name D_OR type_name  RPAREN
-stmt_type_primitive ::= type_name | stmt_type_array | stmt_type_union
-stmt_type_tuple ::= LBRACE ((stmt_type_tuple_name EQ)? stmt_type_primitive) (COMMA (stmt_type_tuple_name EQ)? stmt_type_primitive)* COMMA? RBRACE
-stmt_type_tuple_name ::= IDENTIFIER
-stmt_type_array_tuple ::= LBRACK stmt_type_tuple RBRACK
+stmt_type ::= 'type' type_name EQ type_any {pin=1}
