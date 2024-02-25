@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.11.5]
+
+### Fixed
+
+* Type support: `type array_of_int = [int]`
+* Lutra support: `@(lutra.sqlite {file="chinook.db"})`
+
 ## [0.11.4]
 
 ### Fixed
