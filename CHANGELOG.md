@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.13.0]
+
+### Added
+
+* Update to prql 0.13.0
+
 ## [0.12.2]
 
 ### Added
