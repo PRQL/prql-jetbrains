@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.13.4]
+
+### Added
+
+* Update to prql 0.13.4
+* Compatible with JetBrains IDEs 2025.1
+
 ## [0.13.0]
 
 ### Added
@@ -35,7 +42,7 @@
 
 * Update to prql 0.11.3
 * Optimize for let statement
-* Support for Lutra statement 
+* Support for Lutra statement
 
 ## [0.10.0]
 
@@ -43,7 +50,7 @@
 
 * Update to prql 0.10.0
 * Support for hex/Unicode escape sequences in strings
-* Support for binary/octal/hexadecimal numerical 
+* Support for binary/octal/hexadecimal numerical
 
 ## [0.9.5]
 
