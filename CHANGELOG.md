@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.13.5]
+
+### Added
+
+* Update to prql 0.13.5
+* Compatible with JetBrains IDEs 2025.3
+
 ## [0.13.4]
 
 ### Added
