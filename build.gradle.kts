@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    implementation(files("libs/prql-java-0.13.4.jar"))
+    implementation(files("libs/prql-java-0.13.5.jar"))
 }
 
 // Set the JVM language level used to build project. Use Java 11 for 2020.3+, and Java 17 for 2022.2+.
@@ -42,7 +42,7 @@ intellij {
     pluginName.set(properties("pluginName"))
     type.set(properties("platformType"))
     version.set(properties("platformVersion"))
-    //localPath.set("/Users/linux_china/Applications/IntelliJ IDEA Ultimate.app/Contents")
+    //localPath.set("/Users/linux_china/tools/ideaIU-2023.3.4")
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
