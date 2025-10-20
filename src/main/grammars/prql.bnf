@@ -142,6 +142,7 @@ expr ::=  between_expr | func_call | fun_pipe_call | (LPAREN (expr_literal | fun
 math_expr ::=  math_expr_atomic (math_operation (expr_literal | math_expr_atomic) )*
 math_expr_atomic ::= (expr_literal math_operation (expr_literal | math_expr_atomic) ) | (LPAREN expr_literal math_operation (expr_literal | math_expr_atomic) RPAREN)
 bool_expr ::= between_expr | ( LPAREN (math_expr | expr_literal ) compare_operation expr RPAREN ) | ( (math_expr | expr_literal) compare_operation expr)
+in_expr ::= expr_literal OR IN array_literal
 // column
 column_name ::= IDENTIFIER | AGGREGATE_FUNCTION
 column_with_table ::= table_alias DOT IDENTIFIER
@@ -195,8 +196,9 @@ stmt_concat ::= 'concat' table_variant {pin=1}
 stmt_take ::= 'take' ( positive_range | INTEGER_LITERAL ) {pin=1}
 // filter statement
 stmt_filter ::= 'filter' (stmt_filter_pair |stmt_filter_pairs)  {pin=1}
-stmt_filter_pair ::= bool_expr
-stmt_filter_pairs ::= LPAREN bool_expr ( (AND_LITERAL | D_AND | OR_LITERAL | D_OR ) bool_expr)* RPAREN
+stmt_filter_expr ::= bool_expr | in_expr
+stmt_filter_pair ::= stmt_filter_expr
+stmt_filter_pairs ::= LPAREN stmt_filter_expr ( (AND_LITERAL | D_AND | OR_LITERAL | D_OR ) stmt_filter_expr)* RPAREN
 // derive statement
 stmt_derive ::= 'derive'  (stmt_derive_pairs | stmt_derive_pair)  {pin=1}
 stmt_derive_pair ::= (column_name EQ)? (math_expr| expr)
