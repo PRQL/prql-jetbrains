@@ -7,7 +7,8 @@
 ## [0.13.5]
 
 ### Added
-
+                     
+* Add SQL array support: `filter (department | in ["IT", "HR"])`
 * Update to prql 0.13.5
 * Compatible with JetBrains IDEs 2025.3
 
