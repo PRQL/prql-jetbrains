@@ -16,6 +16,8 @@ class PrqlSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(tokenType: IElementType): Array<TextAttributesKey> {
         val textAttributesKey = when (tokenType) {
             PrqlTypes.RESERVED_KEYWORD,
+            PrqlTypes.THIS_KEYWORD,
+            PrqlTypes.THAT_KEYWORD,
             PrqlTypes.LET,
             PrqlTypes.SWITCH,
             PrqlTypes.CASE,

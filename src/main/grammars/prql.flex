@@ -137,8 +137,10 @@ INDENTED_STRING_QUOTE = (''')([']{0,2}([^']))*(''')
   "?"                             { return QUESTION; }
   "null"                          { return NULL; }
 
-  "prql"| "type" | "module"| "func" |"table" | "into" |"aggregate"|"derive"|"filter"|"from" | "from_text" | "group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append" | "this" | "that"
+  "prql"| "type" | "module"| "func" |"table" | "into" |"aggregate"|"derive"|"filter"|"from" | "from_text" | "group"|"join" |"select" |"sort" | "take" | "window" | "concat" | "union" | "append" 
                                   { return RESERVED_KEYWORD; }
+  "this" { return THIS_KEYWORD; }
+  "that"  { return THAT_KEYWORD; }
   "min"|"max"|"count"|"average"|"stddev"|"every"|"any"|"sum"|"count_distinct"
                                   { return AGGREGATE_FUNCTION; }
   "true"                  { return BOOL_TRUE; }
