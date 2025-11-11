@@ -236,7 +236,7 @@ stmt_window_range_expression ::= 'range' COLON positive_range
 stmt_window_block ::= LPAREN (stmt_derive)* RPAREN
 // group statement
 stmt_group ::= 'group' ( stmt_group_columns  | column_name ) (stmt_group_block)? {pin=1}
-stmt_group_columns ::= LBRACK (column_name) (COMMA column_name)* RBRACK
+stmt_group_columns ::= LBRACE (column_name) (COMMA column_name)* RBRACE
 stmt_group_block ::= LPAREN ( (stmt_aggregate) | (stmt_take) | (stmt_sort) | (stmt_window) )* RPAREN
 // module statement
 stmt_module ::= 'module' stmt_module_name stmt_module_body? {pin=1}
