@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+## [0.13.7]
+
+### Fixed
+                     
+* Fix `this`, `that` as param: `count this`
+* Fix `group { a, b }`
+  
+### Added
+
+* Update to prql 0.13.7
+
 ## [0.13.5]
 
 ### Added
