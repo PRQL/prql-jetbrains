@@ -7,6 +7,7 @@ import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.openapi.ide.CopyPasteManager
 import com.intellij.psi.PsiElement
 import org.mvnsearch.plugins.prql.Prql
+import org.mvnsearch.plugins.prql.ide.icons.PrqlIcons
 import java.awt.datatransfer.StringSelection
 import javax.swing.Icon
 
@@ -17,7 +18,7 @@ class PrqlTranspileLineMarkerContributor : PrqlBaseLienMarkerContributor() {
     }
 
     override fun getIcon(): Icon {
-        return icons.DatabaseIcons.Sql
+        return PrqlIcons.TO_SQL_ICON
     }
 
     override fun getLineMarkerInfo(psiElement: PsiElement): LineMarkerInfo<*>? {
@@ -40,7 +41,8 @@ class PrqlTranspileLineMarkerContributor : PrqlBaseLienMarkerContributor() {
                             raiseError(psiElement.project, "Error generating SQL!", sqlOrError)
                         } else {   // compiled successfully
                             CopyPasteManager.getInstance().setContents(StringSelection(sqlOrError))
-                            val prqlNotificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("PRQL Info")
+                            val prqlNotificationGroup =
+                                NotificationGroupManager.getInstance().getNotificationGroup("PRQL Info")
                             prqlNotificationGroup.createNotification(
                                 "SQL generated and copied to clipboard!",
                                 sqlOrError, NotificationType.INFORMATION
