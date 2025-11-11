@@ -49,7 +49,7 @@ class PrqlRunLineMarkerContributor : PrqlBaseLienMarkerContributor() {
                                     jdbcConsole.consoleView.editorDocument.setText(sqlQuery)
                                 }
                                 val queryRequest =
-                                    DataRequest.newRequest(jdbcConsole, sqlQuery, 0, DbImplUtilCore.getPageSize(jdbcConsole.dataSource.dbms), 0, 0,0)
+                                    DataRequest.newRequest(jdbcConsole, sqlQuery, 0, DbImplUtilCore.getPageSize(jdbcConsole.dataSource.dbms), 0, 0)
                                 jdbcConsole.messageBus.dataProducer.processRequest(queryRequest)
                             }
                         }
