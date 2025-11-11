@@ -10,6 +10,7 @@
                      
 * Fix `this`, `that` as param: `count this`
 * Fix `group { a, b }`
+* Use SQL icon to convert PRQL to SQL
   
 ### Added
 
